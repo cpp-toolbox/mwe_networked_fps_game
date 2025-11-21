@@ -1,0 +1,19 @@
+#ifndef DATA_TO_RECONSTRUCT_CLIENT_GAME_STATE_WHEN_FIRING_ON_SERVER_HPP
+#define DATA_TO_RECONSTRUCT_CLIENT_GAME_STATE_WHEN_FIRING_ON_SERVER_HPP
+
+struct
+    DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer {
+  unsigned int
+      id_of_interpolation_start_game_state_id_for_non_local_character_state;
+  unsigned int
+      id_of_interpolation_end_game_state_id_for_non_local_character_state;
+  double interpolation_percent_when_fired;
+};
+
+// TODO: can this struct be removed?
+struct DataToReconstructClientGameStateWhenFiringOnServer {
+  DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer
+      data_to_reconstruct_non_local_character_physics_state_with_entity_interpolation_when_firing_on_server;
+};
+
+#endif // DATA_TO_RECONSTRUCT_CLIENT_GAME_STATE_WHEN_FIRING_ON_SERVER_HPP

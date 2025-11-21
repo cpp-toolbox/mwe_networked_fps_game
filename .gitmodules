@@ -1,0 +1,270 @@
+[submodule "client/scripts"]
+	path = client/scripts
+	url = git@github.com:cpp-toolbox/scripts.git
+[submodule "client/src/system_logic/toolbox_engine"]
+	path = client/src/system_logic/toolbox_engine
+	url = git@github.com:cpp-toolbox/toolbox_engine.git
+[submodule "client/src/graphics/fps_camera"]
+	path = client/src/graphics/fps_camera
+	url = git@github.com:cpp-toolbox/fps_camera.git
+[submodule "client/src/input/input_state"]
+	path = client/src/input/input_state
+	url = git@github.com:cpp-toolbox/input_state.git
+[submodule "client/src/utility/config_file_parser"]
+	path = client/src/utility/config_file_parser
+	url = git@github.com:cpp-toolbox/config_file_parser.git
+[submodule "client/src/graphics/input_graphics_sound_menu"]
+	path = client/src/graphics/input_graphics_sound_menu
+	url = git@github.com:cpp-toolbox/input_graphics_sound_menu.git
+[submodule "client/src/input/glfw_lambda_callback_manager"]
+	path = client/src/input/glfw_lambda_callback_manager
+	url = git@github.com:cpp-toolbox/glfw_lambda_callback_manager.git
+[submodule "client/src/graphics/shader_cache"]
+	path = client/src/graphics/shader_cache
+	url = git@github.com:cpp-toolbox/shader_cache.git
+[submodule "client/src/utility/fixed_frequency_loop"]
+	path = client/src/utility/fixed_frequency_loop
+	url = git@github.com:cpp-toolbox/fixed_frequency_loop.git
+[submodule "client/src/graphics/ui_render_suite_implementation"]
+	path = client/src/graphics/ui_render_suite_implementation
+	url = git@github.com:cpp-toolbox/ui_render_suite_implementation.git
+[submodule "client/src/graphics/grid_font"]
+	path = client/src/graphics/grid_font
+	url = git@github.com:cpp-toolbox/grid_font.git
+[submodule "client/src/utility/glm_utils"]
+	path = client/src/utility/glm_utils
+	url = git@github.com:cpp-toolbox/glm_utils.git
+[submodule "client/src/graphics/shader_standard"]
+	path = client/src/graphics/shader_standard
+	url = git@github.com:cpp-toolbox/shader_standard.git
+[submodule "client/src/utility/logger"]
+	path = client/src/utility/logger
+	url = git@github.com:cpp-toolbox/logger.git
+[submodule "client/src/graphics/vertex_geometry"]
+	path = client/src/graphics/vertex_geometry
+	url = git@github.com:cpp-toolbox/vertex_geometry.git
+[submodule "client/src/graphics/batcher"]
+	path = client/src/graphics/batcher
+	url = git@github.com:cpp-toolbox/batcher.git
+[submodule "client/src/sound/sound_system"]
+	path = client/src/sound/sound_system
+	url = git@github.com:cpp-toolbox/sound_system.git
+[submodule "client/src/graphics/ui"]
+	path = client/src/graphics/ui
+	url = git@github.com:cpp-toolbox/ui.git
+[submodule "client/src/graphics/colors"]
+	path = client/src/graphics/colors
+	url = git@github.com:cpp-toolbox/colors.git
+[submodule "client/src/input/window"]
+	path = client/src/input/window
+	url = git@github.com:cpp-toolbox/window.git
+[submodule "client/src/utility/text_utils"]
+	path = client/src/utility/text_utils
+	url = git@github.com:cpp-toolbox/text_utils.git
+[submodule "client/src/graphics/draw_info"]
+	path = client/src/graphics/draw_info
+	url = git@github.com:cpp-toolbox/draw_info.git
+[submodule "client/src/utility/transform"]
+	path = client/src/utility/transform
+	url = git@github.com:cpp-toolbox/transform.git
+[submodule "client/src/input/mouse"]
+	path = client/src/input/mouse
+	url = git@github.com:cpp-toolbox/mouse.git
+[submodule "client/src/utility/observable"]
+	path = client/src/utility/observable
+	url = git@github.com:cpp-toolbox/observable.git
+[submodule "client/src/utility/linalg_utils"]
+	path = client/src/utility/linalg_utils
+	url = git@github.com:cpp-toolbox/linalg_utils.git
+[submodule "client/src/utility/temporal_binary_signal"]
+	path = client/src/utility/temporal_binary_signal
+	url = git@github.com:cpp-toolbox/temporal_binary_signal.git
+[submodule "client/src/utility/fs_utils"]
+	path = client/src/utility/fs_utils
+	url = git@github.com:cpp-toolbox/fs_utils.git
+[submodule "client/src/utility/stopwatch"]
+	path = client/src/utility/stopwatch
+	url = git@github.com:cpp-toolbox/stopwatch.git
+[submodule "client/src/utility/regex_utils"]
+	path = client/src/utility/regex_utils
+	url = git@github.com:cpp-toolbox/regex_utils.git
+[submodule "client/src/utility/glm_printing"]
+	path = client/src/utility/glm_printing
+	url = git@github.com:cpp-toolbox/glm_printing.git
+[submodule "client/src/utility/unique_id_generator"]
+	path = client/src/utility/unique_id_generator
+	url = git@github.com:cpp-toolbox/unique_id_generator.git
+[submodule "client/src/utility/fixed_size_array_tracker"]
+	path = client/src/utility/fixed_size_array_tracker
+	url = git@github.com:cpp-toolbox/fixed_size_array_tracker.git
+[submodule "client/src/utility/expiring_temporal_vector"]
+	path = client/src/utility/expiring_temporal_vector
+	url = git@github.com:cpp-toolbox/expiring_temporal_vector.git
+[submodule "client/src/utility/turns"]
+	path = client/src/utility/turns
+	url = git@github.com:cpp-toolbox/turns.git
+[submodule "client/assets/shaders"]
+	path = client/assets/shaders
+	url = git@github.com:cpp-toolbox/shaders.git
+[submodule "client/src/utility/collection_utils"]
+	path = client/src/utility/collection_utils
+	url = git@github.com:cpp-toolbox/collection_utils.git
+[submodule "client/src/networking/client_networking"]
+	path = client/src/networking/client_networking
+	url = git@github.com:cpp-toolbox/client_networking.git
+[submodule "client/src/utility/limited_vector"]
+	path = client/src/utility/limited_vector
+	url = git@github.com:cpp-toolbox/limited_vector.git
+[submodule "client/src/networking/packet_data"]
+	path = client/src/networking/packet_data
+	url = git@github.com:cpp-toolbox/packet_data.git
+[submodule "client/src/utility/reactive_vector"]
+	path = client/src/utility/reactive_vector
+	url = git@github.com:cpp-toolbox/reactive_vector.git
+[submodule "client/src/utility/signal_emitter"]
+	path = client/src/utility/signal_emitter
+	url = git@github.com:cpp-toolbox/signal_emitter.git
+[submodule "server/scripts"]
+	path = server/scripts
+	url = git@github.com:cpp-toolbox/scripts.git
+[submodule "server/src/networking/server_networking"]
+	path = server/src/networking/server_networking
+	url = git@github.com:cpp-toolbox/server_networking.git
+[submodule "server/src/utility/fixed_frequency_loop"]
+	path = server/src/utility/fixed_frequency_loop
+	url = git@github.com:cpp-toolbox/fixed_frequency_loop.git
+[submodule "server/src/networking/packet_data"]
+	path = server/src/networking/packet_data
+	url = git@github.com:cpp-toolbox/packet_data.git
+[submodule "server/src/utility/logger"]
+	path = server/src/utility/logger
+	url = git@github.com:cpp-toolbox/logger.git
+[submodule "server/src/utility/signal_emitter"]
+	path = server/src/utility/signal_emitter
+	url = git@github.com:cpp-toolbox/signal_emitter.git
+[submodule "server/src/utility/stopwatch"]
+	path = server/src/utility/stopwatch
+	url = git@github.com:cpp-toolbox/stopwatch.git
+[submodule "server/src/networking/packet_handler"]
+	path = server/src/networking/packet_handler
+	url = git@github.com:cpp-toolbox/packet_handler.git
+[submodule "client/src/networking/packet_handler"]
+	path = client/src/networking/packet_handler
+	url = git@github.com:cpp-toolbox/packet_handler.git
+[submodule "client/src/system_logic/reconciliation"]
+	path = client/src/system_logic/reconciliation
+	url = git@github.com:cpp-toolbox/reconciliation.git
+[submodule "client/src/system_logic/physics"]
+	path = client/src/system_logic/physics
+	url = git@github.com:cpp-toolbox/physics.git
+[submodule "client/src/utility/jolt_glm_type_conversions"]
+	path = client/src/utility/jolt_glm_type_conversions
+	url = git@github.com:cpp-toolbox/jolt_glm_type_conversions.git
+[submodule "client/src/utility/glm_meta_types"]
+	path = client/src/utility/glm_meta_types
+	url = git@github.com:cpp-toolbox/glm_meta_types.git
+[submodule "client/src/utility/jolt_meta_types"]
+	path = client/src/utility/jolt_meta_types
+	url = git@github.com:cpp-toolbox/jolt_meta_types.git
+[submodule "client/src/utility/meta_utils"]
+	path = client/src/utility/meta_utils
+	url = git@github.com:cpp-toolbox/meta_utils.git
+[submodule "client/src/utility/cpp_parsing"]
+	path = client/src/utility/cpp_parsing
+	url = git@github.com:cpp-toolbox/cpp_parsing.git
+[submodule "client/src/utility/user_input"]
+	path = client/src/utility/user_input
+	url = git@github.com:cpp-toolbox/user_input.git
+[submodule "client/src/utility/movement"]
+	path = client/src/utility/movement
+	url = git@github.com:cpp-toolbox/movement.git
+[submodule "client/src/utility/periodic_signal"]
+	path = client/src/utility/periodic_signal
+	url = git@github.com:cpp-toolbox/periodic_signal.git
+[submodule "server/src/system_logic/physics"]
+	path = server/src/system_logic/physics
+	url = git@github.com:cpp-toolbox/physics.git
+[submodule "server/src/graphics/draw_info"]
+	path = server/src/graphics/draw_info
+	url = git@github.com:cpp-toolbox/draw_info.git
+[submodule "server/src/utility/collection_utils"]
+	path = server/src/utility/collection_utils
+	url = git@github.com:cpp-toolbox/collection_utils.git
+[submodule "server/src/utility/transform"]
+	path = server/src/utility/transform
+	url = git@github.com:cpp-toolbox/transform.git
+[submodule "server/src/utility/unique_id_generator"]
+	path = server/src/utility/unique_id_generator
+	url = git@github.com:cpp-toolbox/unique_id_generator.git
+[submodule "server/src/utility/turns"]
+	path = server/src/utility/turns
+	url = git@github.com:cpp-toolbox/turns.git
+[submodule "server/src/utility/glm_printing"]
+	path = server/src/utility/glm_printing
+	url = git@github.com:cpp-toolbox/glm_printing.git
+[submodule "server/src/utility/linalg_utils"]
+	path = server/src/utility/linalg_utils
+	url = git@github.com:cpp-toolbox/linalg_utils.git
+[submodule "server/src/utility/jolt_meta_types"]
+	path = server/src/utility/jolt_meta_types
+	url = git@github.com:cpp-toolbox/jolt_meta_types.git
+[submodule "server/src/utility/glm_meta_types"]
+	path = server/src/utility/glm_meta_types
+	url = git@github.com:cpp-toolbox/glm_meta_types.git
+[submodule "server/src/utility/config_file_parser"]
+	path = server/src/utility/config_file_parser
+	url = git@github.com:cpp-toolbox/config_file_parser.git
+[submodule "server/src/utility/fs_utils"]
+	path = server/src/utility/fs_utils
+	url = git@github.com:cpp-toolbox/fs_utils.git
+[submodule "server/src/utility/meta_utils"]
+	path = server/src/utility/meta_utils
+	url = git@github.com:cpp-toolbox/meta_utils.git
+[submodule "server/src/utility/text_utils"]
+	path = server/src/utility/text_utils
+	url = git@github.com:cpp-toolbox/text_utils.git
+[submodule "server/src/utility/regex_utils"]
+	path = server/src/utility/regex_utils
+	url = git@github.com:cpp-toolbox/regex_utils.git
+[submodule "server/src/utility/cpp_parsing"]
+	path = server/src/utility/cpp_parsing
+	url = git@github.com:cpp-toolbox/cpp_parsing.git
+[submodule "server/src/utility/movement"]
+	path = server/src/utility/movement
+	url = git@github.com:cpp-toolbox/movement.git
+[submodule "server/src/utility/jolt_glm_type_conversions"]
+	path = server/src/utility/jolt_glm_type_conversions
+	url = git@github.com:cpp-toolbox/jolt_glm_type_conversions.git
+[submodule "server/src/utility/user_input"]
+	path = server/src/utility/user_input
+	url = git@github.com:cpp-toolbox/user_input.git
+[submodule "server/src/utility/periodic_signal"]
+	path = server/src/utility/periodic_signal
+	url = git@github.com:cpp-toolbox/periodic_signal.git
+[submodule "server/src/graphics/vertex_geometry"]
+	path = server/src/graphics/vertex_geometry
+	url = git@github.com:cpp-toolbox/vertex_geometry.git
+[submodule "server/src/graphics/colors"]
+	path = server/src/graphics/colors
+	url = git@github.com:cpp-toolbox/colors.git
+[submodule "client/src/utility/temporal_binary_switch"]
+	path = client/src/utility/temporal_binary_switch
+	url = git@github.com:cpp-toolbox/temporal_binary_switch.git
+[submodule "server/src/graphics/fps_camera"]
+	path = server/src/graphics/fps_camera
+	url = git@github.com:cpp-toolbox/fps_camera.git
+[submodule "server/src/input/mouse"]
+	path = server/src/input/mouse
+	url = git@github.com:cpp-toolbox/mouse.git
+[submodule "server/src/utility/observable"]
+	path = server/src/utility/observable
+	url = git@github.com:cpp-toolbox/observable.git
+[submodule "client/src/utility/networked_interpolator"]
+	path = client/src/utility/networked_interpolator
+	url = git@github.com:cpp-toolbox/networked_interpolator.git
+[submodule "server/src/utility/temporal_binary_switch"]
+	path = server/src/utility/temporal_binary_switch
+	url = git@github.com:cpp-toolbox/temporal_binary_switch.git
+[submodule "server/src/utility/glm_utils"]
+	path = server/src/utility/glm_utils
+	url = git@github.com:cpp-toolbox/glm_utils.git

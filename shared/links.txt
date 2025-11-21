@@ -1,0 +1,23 @@
+packet_types -> ../client/src/networking/packet_types
+packet_types -> ../server/src/networking/packet_types
+
+packets -> ../client/src/networking/packets
+packets -> ../server/src/networking/packets
+
+reconciliation_types -> ../client/src/system_logic/reconciliation_types
+reconciliation_types -> ../server/src/system_logic/reconciliation_types
+
+sound_types -> ../client/src/sound/sound_types
+sound_types -> ../server/src/sound/sound_types
+
+update_physics_character -> ../client/src/system_logic/update_physics_character
+update_physics_character -> ../server/src/system_logic/update_physics_character
+
+create_world -> ../client/src/system_logic/create_world
+create_world -> ../server/src/system_logic/create_world
+
+data_to_reconstruct_client_game_state_when_firing_on_server -> ../client/src/system_logic/data_to_reconstruct_client_game_state_when_firing_on_server 
+data_to_reconstruct_client_game_state_when_firing_on_server -> ../server/src/system_logic/data_to_reconstruct_client_game_state_when_firing_on_server 
+
+interpolate -> ../client/src/system_logic/interpolate 
+interpolate -> ../server/src/system_logic/interpolate 

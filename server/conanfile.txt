@@ -1,0 +1,13 @@
+[requires]
+enet/1.3.18
+glm/1.0.1
+fmt/11.2.0
+spdlog/1.15.3
+joltphysics/5.2.0
+
+[generators]
+CMakeDeps
+CMakeToolchain
+
+[layout]
+cmake_layout
