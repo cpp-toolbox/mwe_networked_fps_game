@@ -1,6 +1,8 @@
 /*
  * next step is to debug some of the shuddering caused by the networked interpolator as compared to raw non-entity
  * interpolation
+ *
+ * next up is to test it out on windows now with the new setup.
  */
 
 #include <iostream>
@@ -10,6 +12,7 @@
 #include "graphics/draw_info/draw_info.hpp"
 #include "graphics/colors/colors.hpp"
 
+#include "utility/networked_periodic_signal_quantizer/networked_periodic_signal_quantizer.hpp"
 #include "utility/jolt_glm_type_conversions/jolt_glm_type_conversions.hpp"
 #include "utility/temporal_binary_switch/temporal_binary_switch.hpp"
 #include "utility/networked_interpolator/networked_interpolator.hpp"
@@ -17,6 +20,7 @@
 #include "utility/periodic_signal/periodic_signal.hpp"
 #include "utility/jolt_meta_types/jolt_meta_types.hpp"
 #include "utility/glm_meta_types/glm_meta_types.hpp"
+#include "utility/glm_printing/glm_printing.hpp"
 #include "utility/meta_utils/meta_utils.hpp"
 
 #include "networking/packet_handler/packet_handler.hpp"
@@ -113,7 +117,11 @@ int main() {
     PacketHandler packet_handler;
 
     NetworkedInterpolator<GameState> networked_interpolator{
-        [](const GameState &start, const GameState &end, float t) { return interpolate(start, end, t); }, 60};
+        [](const GameState &start, const GameState &end, float t) { return interpolate(start, end, t); }, 60, true,
+        [&](const GameState &gs) { return mp.GameState_to_string(gs); }};
+
+    // networked_interpolator.logging_enabled = true;
+    // networked_interpolator.networked_periodic_signal_quantizer.logging_enabled = true;
 
     networked_interpolator.start_state_changed_synchronization
         .connect<NetworkedInterpolator<GameState>::StartStateChangedSignal>(
@@ -234,9 +242,39 @@ int main() {
                                                camera_state_to_string, camera_update_to_string, camera_diff_to_string};
     // endfold
 
+    Stopwatch game_state_receive_stopwatch_raw;
+    Stopwatch game_state_receive_stopwatch_quantized;
+
+    // NetworkedPeriodicSignalQuantizer<GameState> networked_periodic_signal_quantizer;
+
+    // networked_periodic_signal_quantizer.output_emitter.connect<GameState>([&](const GameState &gs) {
+    //     // game_state_receive_stopwatch_quantized.press();
+    //     networked_interpolator.register_new_state(gs);
+    // });
+
     packet_handler.register_handler(PacketType::GAME_STATE, [&](std::vector<uint8_t> buffer) {
         auto gsp = mp.deserialize_GameStatePacket(buffer);
         global_logger.info("just received {}", mp.GameStatePacket_to_string(gsp));
+        game_state_receive_stopwatch_raw.press();
+        networked_interpolator.register_new_state(gsp.game_state);
+        // networked_periodic_signal_quantizer.push(gsp.game_state);
+
+        global_logger.info("raw receive macro stats: {}",
+                           game_state_receive_stopwatch_raw.get_macro_stats().to_string());
+        global_logger.info("raw receive micro stats: {}",
+                           game_state_receive_stopwatch_raw.get_micro_stats().to_string());
+
+        // global_logger.info("quantized receive macro stats: {}",
+        //                    game_state_receive_stopwatch_quantized.get_macro_stats().to_string());
+        // global_logger.info("quantized receive micro stats: {}",
+        //                    game_state_receive_stopwatch_quantized.get_micro_stats().to_string());
+        //
+        // global_logger.info("networked_periodic_signal_quantizer missed emit percentage: {}",
+        //                    networked_periodic_signal_quantizer.get_missed_emit_percentage());
+        //
+        // global_logger.info("networked_periodic_signal_quantizer average_size: {}",
+        //                    networked_periodic_signal_quantizer.get_average_received_server_states_size());
+
         GameState gs = gsp.game_state;
         PhysicsReconciliation::IdTaggedState prits{
             gs.id_tagged_character_physics_state.character_physics_state,
@@ -252,11 +290,13 @@ int main() {
         }
 
         if (using_entity_interpolation) {
-            networked_interpolator.register_new_state(gs);
+            // networked_interpolator.register_new_state(gs);
         } else {
             physics_target->SetPosition(gs.target_physics_state.position);
             physics_target->SetLinearVelocity(gs.target_physics_state.velocity);
             target_visual.transform.set_translation(j2g(gs.target_physics_state.position));
+            global_logger.debug("just set physics_target position to: {}",
+                                vec3_to_string(j2g(gs.target_physics_state.position)));
         }
     });
 
@@ -264,6 +304,7 @@ int main() {
     unsigned int character_update_data_id = 0;
     unsigned int local_client_id = 0;
     TemporalBinarySwitch fire_tbs;
+
     auto tick = [&](double dt) {
         // startfold network
         auto packets = network.get_network_events_received_since_last_tick();
@@ -290,12 +331,15 @@ int main() {
         std::vector mouse_interactible_elements_active = {tbx_engine.igs_menu_active};
         bool ignore_inputs = tbx_engine.active_mouse_mode == ToolboxEngine::ActiveMouseMode::MenuInteraction;
 
+        // networked_periodic_signal_quantizer.update();
         networked_interpolator.update();
 
         if (using_entity_interpolation) {
             auto interpolated_game_state = networked_interpolator.get_state();
             if (interpolated_game_state) {
                 physics_target->SetPosition(interpolated_game_state->target_physics_state.position);
+                global_logger.debug("just set physics_target position to: {}",
+                                    vec3_to_string(j2g(interpolated_game_state->target_physics_state.position)));
                 target_visual.transform.set_translation(j2g(interpolated_game_state->target_physics_state.position));
             }
         }

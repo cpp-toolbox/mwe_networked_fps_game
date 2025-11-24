@@ -1,0 +1,31 @@
+extracted 21610 many client updates
+extracted 21588 many server updates
+======== COMPARING LOGS ========
+
+--- Checking missing updates ---
+❌ Update ID 21589 exists on client but NOT on server!
+❌ Update ID 21590 exists on client but NOT on server!
+❌ Update ID 21591 exists on client but NOT on server!
+❌ Update ID 21592 exists on client but NOT on server!
+❌ Update ID 21593 exists on client but NOT on server!
+❌ Update ID 21594 exists on client but NOT on server!
+❌ Update ID 21595 exists on client but NOT on server!
+❌ Update ID 21596 exists on client but NOT on server!
+❌ Update ID 21597 exists on client but NOT on server!
+❌ Update ID 21598 exists on client but NOT on server!
+❌ Update ID 21599 exists on client but NOT on server!
+❌ Update ID 21600 exists on client but NOT on server!
+❌ Update ID 21601 exists on client but NOT on server!
+❌ Update ID 21602 exists on client but NOT on server!
+❌ Update ID 21603 exists on client but NOT on server!
+❌ Update ID 21604 exists on client but NOT on server!
+❌ Update ID 21605 exists on client but NOT on server!
+❌ Update ID 21606 exists on client but NOT on server!
+❌ Update ID 21607 exists on client but NOT on server!
+❌ Update ID 21608 exists on client but NOT on server!
+❌ Update ID 21609 exists on client but NOT on server!
+❌ Update ID 21610 exists on client but NOT on server!
+
+--- Checking state mismatches ---
+
+Done.
