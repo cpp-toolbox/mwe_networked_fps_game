@@ -277,3 +277,9 @@
 [submodule "client/src/utility/networked_periodic_signal_quantizer"]
 	path = client/src/utility/networked_periodic_signal_quantizer
 	url = git@github.com:cpp-toolbox/networked_periodic_signal_quantizer.git
+[submodule "server/src/utility/lazy_construction"]
+	path = server/src/utility/lazy_construction
+	url = git@github.com:cpp-toolbox/lazy_construction.git
+[submodule "client/src/utility/lazy_construction"]
+	path = client/src/utility/lazy_construction
+	url = git@github.com:cpp-toolbox/lazy_construction.git

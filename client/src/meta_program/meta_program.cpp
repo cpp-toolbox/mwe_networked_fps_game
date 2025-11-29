@@ -1,6 +1,4 @@
 #include "meta_program.hpp"
 
-namespace meta_program {
+LazyConstruction<MetaProgram, std::vector<meta_utils::MetaType>> meta_program = LazyConstruction<MetaProgram, std::vector<meta_utils::MetaType>>(meta_utils::meta_types.get_concrete_types());
 
-
-} // namespace meta_program

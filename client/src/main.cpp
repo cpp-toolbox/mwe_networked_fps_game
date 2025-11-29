@@ -3,6 +3,8 @@
  * interpolation
  *
  * next up is to test it out on windows now with the new setup.
+ *
+ * TODO: we need to debug why network tick takes so long so we need so logging/timing utilties for this.
  */
 
 #include <iostream>
@@ -12,6 +14,7 @@
 #include "graphics/draw_info/draw_info.hpp"
 #include "graphics/colors/colors.hpp"
 
+#include "utility/logger/logger.hpp"
 #include "utility/networked_periodic_signal_quantizer/networked_periodic_signal_quantizer.hpp"
 #include "utility/jolt_glm_type_conversions/jolt_glm_type_conversions.hpp"
 #include "utility/temporal_binary_switch/temporal_binary_switch.hpp"
@@ -55,8 +58,8 @@ using ClientIdToNonLocalCharacterBase = std::unordered_map<unsigned int, NonLoca
 
 int main() {
 
-    global_logger.remove_all_sinks();
-    global_logger.add_file_sink("logs/logs.txt");
+    global_logger->remove_all_sinks();
+    global_logger->add_file_sink("logs/logs.txt");
 
     ToolboxEngine tbx_engine("client",
                              {ShaderType::ABSOLUTE_POSITION_WITH_COLORED_VERTEX,
@@ -75,8 +78,8 @@ int main() {
         tbx_engine.input_state.glfw_cursor_pos_callback(xpos, ypos);
     };
     tbx_engine.glfw_lambda_callback_manager.set_cursor_pos_callback(mouse_pos_callback);
+    tbx_engine.glfw_lambda_callback_manager.logging_enabled = true;
 
-    meta_program::MetaProgram mp({meta_utils::meta_types.get_concrete_types()});
     if (tbx_engine.configuration.get_value("general", "development_mode") == "on") {
         register_glm_meta_types();
         register_jolt_meta_types();
@@ -116,12 +119,19 @@ int main() {
     Network network(ip_address);
     PacketHandler packet_handler;
 
+    // NOTE: this was done to reduce "multiple reconciliation" which occurred when mutliple game states were received on
+    // the client, we had no other way of doing this because we were reconciling inside of the callback function which
+    // makes the most sense (ie you should reconcile as soon as you get it), and thus we needed a way to only run it on
+    // a particular packet. This reduces waste
+    packet_handler.packet_type_to_handling_method.emplace(
+        PacketType::GAME_STATE, PacketHandler::PacketTypeHandlingMethod::LAST_RECEIVED_PACKET_ONLY);
+
     NetworkedInterpolator<GameState> networked_interpolator{
         [](const GameState &start, const GameState &end, float t) { return interpolate(start, end, t); }, 60, true,
-        [&](const GameState &gs) { return mp.GameState_to_string(gs); }};
+        [&](const GameState &gs) { return meta_program->GameState_to_string(gs); }};
 
-    // networked_interpolator.logging_enabled = true;
-    // networked_interpolator.networked_periodic_signal_quantizer.logging_enabled = true;
+    networked_interpolator.logging_enabled = true;
+    networked_interpolator.networked_periodic_signal_quantizer.logging_enabled = true;
 
     networked_interpolator.start_state_changed_synchronization
         .connect<NetworkedInterpolator<GameState>::StartStateChangedSignal>(
@@ -150,6 +160,7 @@ int main() {
 
     // startfold physics reconciliation
     auto update = [&](CharacterPhysicsUpdateData &cpud, bool reconciling) {
+        GlobalLogSection _("updating physics state");
         // NOTE: when reconciling physics_character's state is authoratively set to the newly received server state
         update_physics_character(cpud, physics_character, physics);
     };
@@ -174,18 +185,20 @@ int main() {
         physics.refresh_contacts(physics_character);
     };
 
-    auto state_to_string = [&](const CharacterPhysicsState &s) { return mp.CharacterPhysicsState_to_string(s); };
+    auto state_to_string = [&](const CharacterPhysicsState &s) {
+        return meta_program->CharacterPhysicsState_to_string(s);
+    };
 
     auto update_to_string = [&](const CharacterPhysicsUpdateData &u) {
-        return mp.CharacterPhysicsUpdateData_to_string(u);
+        return meta_program->CharacterPhysicsUpdateData_to_string(u);
     };
 
     auto diff_to_string = [&](const CharacterPhysicsState &a, const CharacterPhysicsState &b) {
         std::ostringstream oss;
         auto position_diff = b.position - a.position;
         auto velocity_diff = b.velocity - a.velocity;
-        oss << "delta position=" << mp.JPH_Vec3_to_string(position_diff) << ", "
-            << "delta velocity=" << mp.JPH_Vec3_to_string(velocity_diff);
+        oss << "delta position=" << meta_program->JPH_Vec3_to_string(position_diff) << ", "
+            << "delta velocity=" << meta_program->JPH_Vec3_to_string(velocity_diff);
         return oss.str();
     };
 
@@ -223,10 +236,12 @@ int main() {
         tbx_engine.fps_camera.mouse.last_mouse_position_y = ccs.last_mouse_position_y;
     };
 
-    auto camera_state_to_string = [&](const CharacterCameraState &s) { return mp.CharacterCameraState_to_string(s); };
+    auto camera_state_to_string = [&](const CharacterCameraState &s) {
+        return meta_program->CharacterCameraState_to_string(s);
+    };
 
     auto camera_update_to_string = [&](const CharacterCameraUpdateData &u) {
-        return mp.CharacterCameraUpdateData_to_string(u);
+        return meta_program->CharacterCameraUpdateData_to_string(u);
     };
 
     auto camera_diff_to_string = [&](const CharacterCameraState &a, const CharacterCameraState &b) {
@@ -252,27 +267,28 @@ int main() {
     //     networked_interpolator.register_new_state(gs);
     // });
 
+    // TODO: remove this probabaly.
     packet_handler.register_handler(PacketType::GAME_STATE, [&](std::vector<uint8_t> buffer) {
-        auto gsp = mp.deserialize_GameStatePacket(buffer);
-        global_logger.info("just received {}", mp.GameStatePacket_to_string(gsp));
+        auto gsp = meta_program->deserialize_GameStatePacket(buffer);
+        global_logger->info("just received {}", meta_program->GameStatePacket_to_string(gsp));
         game_state_receive_stopwatch_raw.press();
         networked_interpolator.register_new_state(gsp.game_state);
         // networked_periodic_signal_quantizer.push(gsp.game_state);
 
-        global_logger.info("raw receive macro stats: {}",
-                           game_state_receive_stopwatch_raw.get_macro_stats().to_string());
-        global_logger.info("raw receive micro stats: {}",
-                           game_state_receive_stopwatch_raw.get_micro_stats().to_string());
+        global_logger->info("raw receive macro stats: {}",
+                            game_state_receive_stopwatch_raw.get_macro_stats().to_string());
+        global_logger->info("raw receive micro stats: {}",
+                            game_state_receive_stopwatch_raw.get_micro_stats().to_string());
 
-        // global_logger.info("quantized receive macro stats: {}",
+        // global_logger->info("quantized receive macro stats: {}",
         //                    game_state_receive_stopwatch_quantized.get_macro_stats().to_string());
-        // global_logger.info("quantized receive micro stats: {}",
+        // global_logger->info("quantized receive micro stats: {}",
         //                    game_state_receive_stopwatch_quantized.get_micro_stats().to_string());
         //
-        // global_logger.info("networked_periodic_signal_quantizer missed emit percentage: {}",
+        // global_logger->info("networked_periodic_signal_quantizer missed emit percentage: {}",
         //                    networked_periodic_signal_quantizer.get_missed_emit_percentage());
         //
-        // global_logger.info("networked_periodic_signal_quantizer average_size: {}",
+        // global_logger->info("networked_periodic_signal_quantizer average_size: {}",
         //                    networked_periodic_signal_quantizer.get_average_received_server_states_size());
 
         GameState gs = gsp.game_state;
@@ -295,8 +311,8 @@ int main() {
             physics_target->SetPosition(gs.target_physics_state.position);
             physics_target->SetLinearVelocity(gs.target_physics_state.velocity);
             target_visual.transform.set_translation(j2g(gs.target_physics_state.position));
-            global_logger.debug("just set physics_target position to: {}",
-                                vec3_to_string(j2g(gs.target_physics_state.position)));
+            global_logger->debug("just set physics_target position to: {}",
+                                 vec3_to_string(j2g(gs.target_physics_state.position)));
         }
     });
 
@@ -306,274 +322,313 @@ int main() {
     TemporalBinarySwitch fire_tbs;
 
     auto tick = [&](double dt) {
-        // startfold network
-        auto packets = network.get_network_events_received_since_last_tick();
-        packet_handler.handle_packets(packets);
-        // endfold
+        GlobalLogSection _("tick");
+        global_logger->info("iteration number: {}", tbx_engine.main_loop.iteration_count);
 
-        // startfold set uniforms
-        tbx_engine.shader_cache.set_uniform(ShaderType::CWL_V_TRANSFORMATION_UBOS_1024_WITH_COLORED_VERTEX,
-                                            ShaderUniformVariable::CAMERA_TO_CLIP,
-                                            tbx_engine.fps_camera.get_projection_matrix());
+        {
+            GlobalLogSection _("tick set uniforms");
+            // startfold set uniforms
+            tbx_engine.shader_cache.set_uniform(ShaderType::CWL_V_TRANSFORMATION_UBOS_1024_WITH_COLORED_VERTEX,
+                                                ShaderUniformVariable::CAMERA_TO_CLIP,
+                                                tbx_engine.fps_camera.get_projection_matrix());
 
-        tbx_engine.shader_cache.set_uniform(ShaderType::CWL_V_TRANSFORMATION_UBOS_1024_WITH_COLORED_VERTEX,
-                                            ShaderUniformVariable::WORLD_TO_CAMERA,
-                                            tbx_engine.fps_camera.get_view_matrix());
+            tbx_engine.shader_cache.set_uniform(ShaderType::CWL_V_TRANSFORMATION_UBOS_1024_WITH_COLORED_VERTEX,
+                                                ShaderUniformVariable::WORLD_TO_CAMERA,
+                                                tbx_engine.fps_camera.get_view_matrix());
 
-        auto [arx, ary] = tbx_engine.window.get_aspect_ratio_in_simplest_terms();
+            auto [arx, ary] = tbx_engine.window.get_aspect_ratio_in_simplest_terms();
 
-        tbx_engine.shader_cache.set_uniform(ShaderType::ABSOLUTE_POSITION_WITH_COLORED_VERTEX,
-                                            ShaderUniformVariable::ASPECT_RATIO, glm::vec2(arx, ary));
+            tbx_engine.shader_cache.set_uniform(ShaderType::ABSOLUTE_POSITION_WITH_COLORED_VERTEX,
+                                                ShaderUniformVariable::ASPECT_RATIO, glm::vec2(arx, ary));
 
-        // endfold
-
-        // startfold state updating
-        std::vector mouse_interactible_elements_active = {tbx_engine.igs_menu_active};
-        bool ignore_inputs = tbx_engine.active_mouse_mode == ToolboxEngine::ActiveMouseMode::MenuInteraction;
-
-        // networked_periodic_signal_quantizer.update();
-        networked_interpolator.update();
-
-        if (using_entity_interpolation) {
-            auto interpolated_game_state = networked_interpolator.get_state();
-            if (interpolated_game_state) {
-                physics_target->SetPosition(interpolated_game_state->target_physics_state.position);
-                global_logger.debug("just set physics_target position to: {}",
-                                    vec3_to_string(j2g(interpolated_game_state->target_physics_state.position)));
-                target_visual.transform.set_translation(j2g(interpolated_game_state->target_physics_state.position));
-            }
+            // endfold
         }
 
-        // startfold camera
-        CharacterCameraUpdateData ccud;
-        if (not ignore_inputs) {
-            // NOTE: when we switch to menu mode and come back to camera control we get a huge delta because the
-            // mouse was not updated during that time, this is something we should fix in the future, but I don't
-            // care about right now
-            ccud = CharacterCameraUpdateData(tbx_engine.input_state.mouse_position_x,
-                                             tbx_engine.input_state.mouse_position_y,
-                                             tbx_engine.fps_camera.active_sensitivity);
-        } else { // the menu is active, in this case we want to keep sending the same thing over and over
-            // TODO
-        }
+        {
 
-        // id_tagged_character_physics_update_data_since_last_client_to_server_send.push_back(itccud);
+            GlobalLogSection _("tick state updating");
+            // startfold state updating
+            std::vector mouse_interactible_elements_active = {tbx_engine.igs_menu_active};
+            bool ignore_inputs = tbx_engine.active_mouse_mode == ToolboxEngine::ActiveMouseMode::MenuInteraction;
 
-        // endfold
+            // networked_periodic_signal_quantizer.update();
+            networked_interpolator.update();
 
-        auto bundle_constrained_dt = character_physics_update_data_time_bundler.get_bundle_constrained_dt(dt);
-        global_logger.debug("just got bundle constrained dt: {}", bundle_constrained_dt);
-        // auto bundle_constrained_dt = dt;
+            if (using_entity_interpolation) {
+                auto interpolated_game_state = networked_interpolator.get_state();
+                if (interpolated_game_state) {
 
-        ClientInputState cis(tbx_engine.input_state.is_pressed(EKey::w), tbx_engine.input_state.is_pressed(EKey::s),
-                             tbx_engine.input_state.is_pressed(EKey::d), tbx_engine.input_state.is_pressed(EKey::a),
-                             tbx_engine.input_state.is_pressed(EKey::SPACE));
-
-        CharacterPhysicsUpdateData cpud{bundle_constrained_dt, cis,
-                                        tbx_engine.fps_camera.transform.compute_xz_forward_vector()};
-
-        // NOTE: this keeps the mouse feeling "live"
-        // TODO: can we just combine these two by baking in yaw pitch into the physics character soon? idk yet this is
-        // probably fine for now
-        auto ccud_id = camera_reconciliation.apply_update(ccud);
-        auto cpud_id = physics_character_reconciliation.apply_update(cpud);
-
-        if (cpud_id != ccud_id) {
-            global_logger.critical("the reconciliation needs to remain synchronnous killing myself now");
-            return;
-        }
-        character_update_data_id = ccud_id;
-
-        // startfold create cfud
-        fire_tbs.set(tbx_engine.input_state.is_pressed(EKey::LEFT_MOUSE_BUTTON));
-        bool fire_pressed = fire_tbs.is_on();
-
-        // NOTE: if you fire on the client and send that over in ClientUpdataDataPacket with id X
-        // then the server will probably also fire when it process this updata data, though if the packet never gets
-        // there then it wouldn't, assuming we held down fire for X, X+1, ..., X+n, then the fire will probably occur
-        // when the first one of those packets reaches the server, therefore it's probably the best to send over the
-        // fire context whenever they're holding down fire so that we can try and reconstruct the state on the server
-        // when we fired. Note that the server is authorative about firing
-
-        std::optional<DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer>
-            data_to_reconstruct_non_local_character_physics_state_with_entity_interpolation_when_firing_on_server;
-
-        if (fire_pressed) { // A
-            auto opt_start = networked_interpolator.get_active_start_state();
-            auto opt_end = networked_interpolator.get_active_end_state();
-            auto t = networked_interpolator.get_active_t();
-
-            if (opt_start.has_value() and opt_end.has_value()) {
-                data_to_reconstruct_non_local_character_physics_state_with_entity_interpolation_when_firing_on_server =
-                    DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer{
-                        // TODO: problem: the variable name is not good here, thei d is actually the game state id, fix
-                        // later
-                        opt_start.value().id, opt_end.value().id, t};
+                    physics_target->SetPosition(interpolated_game_state->target_physics_state.position);
+                    global_logger->debug("just set physics_target position to: {}",
+                                         vec3_to_string(j2g(interpolated_game_state->target_physics_state.position)));
+                    target_visual.transform.set_translation(
+                        j2g(interpolated_game_state->target_physics_state.position));
+                }
             }
 
-            // data_to_reconstruct_client_game_state_when_firing_on_server
-            //     .id_of_last_applied_character_camera_update_data_before_firing = ccud_id;
-            // data_to_reconstruct_client_game_state_when_firing_on_server
-            //     .id_of_last_applied_character_physics_update_data_before_firing = cpud_id;
-            // TODO: interpolation data when we can
-        }
-
-        CharacterFiringUpdateData cfud{
-            fire_pressed,
-            data_to_reconstruct_non_local_character_physics_state_with_entity_interpolation_when_firing_on_server};
-        // endfold
-
-        CharacterUpdateData character_update_data{cpud, ccud, cfud};
-        IdTaggedCharacterUpdateData id_tagged_character_update_data{character_update_data_id, character_update_data};
-
-        character_physics_update_data_time_bundler.register_cud(id_tagged_character_update_data);
-
-        tbx_engine.fps_camera.transform.set_translation(j2g(physics_character->GetPosition()));
-        tbx_engine.update_active_mouse_mode(tbx_engine.igs_menu_active);
-
-        // SubtickHitscan::PotentiallyFireContext pfctx{fire_pressed, };
-
-        // I only want to construct this once we know a firing occurred on the client, but do we know when
-
-        // DataToReconstructLocalSubtickPhysicsStateWhenFiringOnServer
-        //     data_to_reconstruct_local_subtick_physics_state_when_firing_on_server;
-        //
-        // // Or do we just need the active bundle, I think it's this.
-        // std::vector<PhysicsReconciliation::IdTaggedStateUpdateData>
-        //     physics_update_datas_applied_since_last_authorative_state =
-        //         physics_character_reconciliation.get_update_datas_applied_since_last_authorative_state();
-        //
-        // for (const auto &physics_update_data_applied_since_last_authorative_state :
-        //      physics_update_datas_applied_since_last_authorative_state) {
-        //     data_to_reconstruct_local_subtick_physics_state_when_firing_on_server
-        //         .id_tagged_character_physics_update_datas_applied_since_last_reconciliation.emplace_back(
-        //             physics_update_data_applied_since_last_authorative_state.id,
-        //             physics_update_data_applied_since_last_authorative_state.update_data);
-        // }
-        //
-        // // we definitely need this though.
-        // std::vector<CameraReconciliation::IdTaggedStateUpdateData>
-        //     camera_update_datas_applied_since_last_authorative_state =
-        //         camera_reconciliation.get_update_datas_applied_since_last_authorative_state();
-        //
-        // DataToReconstructLocalSubtickCameraStateWhenFiringOnServer
-        //     data_to_reconstruct_local_subtick_camera_state_when_firing_on_server;
-        //
-        // for (const auto &camera_update_data_applied_since_last_authorative_state :
-        //      camera_update_datas_applied_since_last_authorative_state) {
-        //     data_to_reconstruct_local_subtick_camera_state_when_firing_on_server
-        //         .id_tagged_character_camera_update_datas_applied_since_last_reconciliation.emplace_back(
-        //             camera_update_data_applied_since_last_authorative_state.id,
-        //             camera_update_data_applied_since_last_authorative_state.update_data);
-        // }
-
-        // subtick_hitscan.potentially_fire(const PotentiallyFireContext &pfctx);
-
-        // NOTE: we allow for "local firing" in the sense that we still need to be able to go back in time on the server
-        // so that we can fire accurtely from the players pov, the clients are not authorative, but it's important for
-        // the server to accurately reconstruct the game stae in which the fired without allowing client to stretch the
-        // truth too much (eg you can't shoot at someone really long in the past, cause then you could kill people
-        // before they every saw you)
-        if (fire_tbs.just_switched_on()) { // B
-
-            global_logger.info("fire tbs isj usts witched on");
-
-            // TODO: run local hitscan logic to see if we hit anything, its no longer subtick whatever but now it's like
-            // interpolated? No not even that? actually yeah maybe that... but we just get the state from the networked
-            // interpolator and then we can use that to check if we hit it...
-
-            auto local_fps_camera = tbx_engine.fps_camera;
-
-            auto hitscan_ray = g2j(local_fps_camera.transform.compute_forward_vector() * 1000.0);
-            auto hitscan_ray_origin = physics_character->GetPosition() + physics.eyes_offset_from_center;
-            JPH::RayCast aim_ray(hitscan_ray_origin, hitscan_ray);
-
-            std::unordered_map<unsigned int, Physics::CharacterHitscanContext> client_id_to_character_hitscan_context;
-            for (auto &[client_id, non_local_client_character_base] : client_id_to_non_local_client_character_base) {
-                client_id_to_character_hitscan_context.emplace(
-                    client_id, Physics::CharacterHitscanContext{non_local_client_character_base.physics_character});
+            // startfold camera
+            CharacterCameraUpdateData ccud;
+            if (not ignore_inputs) {
+                // NOTE: when we switch to menu mode and come back to camera control we get a huge delta because the
+                // mouse was not updated during that time, this is something we should fix in the future, but I don't
+                // care about right now
+                ccud = CharacterCameraUpdateData(tbx_engine.input_state.mouse_position_x,
+                                                 tbx_engine.input_state.mouse_position_y,
+                                                 tbx_engine.fps_camera.active_sensitivity);
+            } else { // the menu is active, in this case we want to keep sending the same thing over and over
+                // TODO
             }
 
-            Physics::HitscanResult hr = physics.fire_hitscan_weapon(aim_ray, client_id_to_character_hitscan_context,
-                                                                    local_client_id, physics.created_body_ids);
+            // id_tagged_character_physics_update_data_since_last_client_to_server_send.push_back(itccud);
 
-            global_logger.info(
-                "just fired with yaw={}, pitch={}, position={}", local_fps_camera.transform.get_rotation_yaw(),
-                local_fps_camera.transform.get_rotation_pitch(), mp.JPH_Vec3_to_string(hitscan_ray_origin));
+            // endfold
 
-            if (hr.hit_character()) {
-                unsigned int id = *hr.hit_character_id;
-                auto pos = client_id_to_non_local_client_character_base.at(id).physics_character->GetPosition();
-                global_logger.info("hit player with id {} they had position {}", id, mp.JPH_Vec3_to_string(pos));
-                tbx_engine.sound_system.queue_sound(SoundType::CLIENT_HIT);
-            } else if (hr.hit_world_object()) {
-                global_logger.info("hit world object body {} at fraction {}", hr.hit_world_body_id->GetIndex(),
-                                   *hr.hit_fraction);
-                tbx_engine.sound_system.queue_sound(SoundType::CLIENT_MISS);
-            } else {
-                // nothing was hit
-                global_logger.info("hit nothing");
-                tbx_engine.sound_system.queue_sound(SoundType::CLIENT_MISS);
+            auto bundle_constrained_dt = character_physics_update_data_time_bundler.get_bundle_constrained_dt(dt);
+            global_logger->debug("just got bundle constrained dt: {}", bundle_constrained_dt);
+            // auto bundle_constrained_dt = dt;
+
+            ClientInputState cis(tbx_engine.input_state.is_pressed(EKey::w), tbx_engine.input_state.is_pressed(EKey::s),
+                                 tbx_engine.input_state.is_pressed(EKey::d), tbx_engine.input_state.is_pressed(EKey::a),
+                                 tbx_engine.input_state.is_pressed(EKey::SPACE));
+
+            CharacterPhysicsUpdateData cpud{bundle_constrained_dt, cis,
+                                            tbx_engine.fps_camera.transform.compute_xz_forward_vector()};
+
+            // NOTE: this keeps the mouse feeling "live"
+            // TODO: can we just combine these two by baking in yaw pitch into the physics character soon? idk yet this
+            // is probably fine for now
+            auto ccud_id = camera_reconciliation.apply_update(ccud);
+            auto cpud_id = physics_character_reconciliation.apply_update(cpud);
+
+            if (cpud_id != ccud_id) {
+                global_logger->critical("the reconciliation needs to remain synchronnous killing myself now");
+                return;
             }
-        }
+            character_update_data_id = ccud_id;
 
-        // endfold
+            // startfold create cfud
+            fire_tbs.set(tbx_engine.input_state.is_pressed(EKey::LEFT_MOUSE_BUTTON));
+            bool fire_pressed = fire_tbs.is_on();
 
-        // startfold client to server send
-        if (client_to_server_send_signal.process_and_get_signal()) {
-            ClientUpdateData client_update_data;
-            client_update_data.character_update_data_time_bundles =
-                character_physics_update_data_time_bundler.take_bundles_since_last_send();
-            client_update_data.id = client_update_data_packet_id;
+            // NOTE: if you fire on the client and send that over in ClientUpdataDataPacket with id X
+            // then the server will probably also fire when it process this updata data, though if the packet never gets
+            // there then it wouldn't, assuming we held down fire for X, X+1, ..., X+n, then the fire will probably
+            // occur when the first one of those packets reaches the server, therefore it's probably the best to send
+            // over the fire context whenever they're holding down fire so that we can try and reconstruct the state on
+            // the server when we fired. Note that the server is authorative about firing
 
-            ClientUpdateDataPacket client_update_data_packet;
+            std::optional<DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer>
+                data_to_reconstruct_non_local_character_physics_state_with_entity_interpolation_when_firing_on_server;
 
-            client_update_data_packet.client_update_data = client_update_data;
-            client_update_data_packet.packet_header.type = PacketType::CLIENT_UPDATE_DATA;
+            if (fire_pressed) { // A
+                auto opt_start = networked_interpolator.get_active_start_state();
+                auto opt_end = networked_interpolator.get_active_end_state();
+                auto t = networked_interpolator.get_active_t();
 
-            client_update_data_packet.packet_header.size_of_data_without_header =
-                mp.size_when_serialized_ClientUpdateData(client_update_data_packet.client_update_data);
+                if (opt_start.has_value() and opt_end.has_value()) {
+                    data_to_reconstruct_non_local_character_physics_state_with_entity_interpolation_when_firing_on_server =
+                        DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer{
+                            // TODO: problem: the variable name is not good here, thei d is actually the game state id,
+                            // fix
+                            // later
+                            opt_start.value().id, opt_end.value().id, t};
+                }
 
-            auto buffer = mp.serialize_ClientUpdateDataPacket(client_update_data_packet);
-
-            network.send_packet(buffer.data(), buffer.size());
-            client_update_data_packet_id++;
-            global_logger.info("just sent: {}", text_utils::format_nested_braces_string_recursive_with_newlines(
-                                                    mp.ClientUpdateDataPacket_to_string(client_update_data_packet)));
-
-            for (const auto &bundle : client_update_data_packet.client_update_data.character_update_data_time_bundles) {
-                global_logger.info("its time usage is: {}", bundle.total_amount_of_time());
+                // data_to_reconstruct_client_game_state_when_firing_on_server
+                //     .id_of_last_applied_character_camera_update_data_before_firing = ccud_id;
+                // data_to_reconstruct_client_game_state_when_firing_on_server
+                //     .id_of_last_applied_character_physics_update_data_before_firing = cpud_id;
+                // TODO: interpolation data when we can
             }
+
+            CharacterFiringUpdateData cfud{
+                fire_pressed,
+                data_to_reconstruct_non_local_character_physics_state_with_entity_interpolation_when_firing_on_server};
+            // endfold
+
+            CharacterUpdateData character_update_data{cpud, ccud, cfud};
+            IdTaggedCharacterUpdateData id_tagged_character_update_data{character_update_data_id,
+                                                                        character_update_data};
+
+            character_physics_update_data_time_bundler.register_cud(id_tagged_character_update_data);
+
+            tbx_engine.fps_camera.transform.set_translation(j2g(physics_character->GetPosition()));
+            tbx_engine.update_active_mouse_mode(tbx_engine.igs_menu_active);
+
+            // SubtickHitscan::PotentiallyFireContext pfctx{fire_pressed, };
+
+            // I only want to construct this once we know a firing occurred on the client, but do we know when
+
+            // DataToReconstructLocalSubtickPhysicsStateWhenFiringOnServer
+            //     data_to_reconstruct_local_subtick_physics_state_when_firing_on_server;
+            //
+            // // Or do we just need the active bundle, I think it's this.
+            // std::vector<PhysicsReconciliation::IdTaggedStateUpdateData>
+            //     physics_update_datas_applied_since_last_authorative_state =
+            //         physics_character_reconciliation.get_update_datas_applied_since_last_authorative_state();
+            //
+            // for (const auto &physics_update_data_applied_since_last_authorative_state :
+            //      physics_update_datas_applied_since_last_authorative_state) {
+            //     data_to_reconstruct_local_subtick_physics_state_when_firing_on_server
+            //         .id_tagged_character_physics_update_datas_applied_since_last_reconciliation.emplace_back(
+            //             physics_update_data_applied_since_last_authorative_state.id,
+            //             physics_update_data_applied_since_last_authorative_state.update_data);
+            // }
+            //
+            // // we definitely need this though.
+            // std::vector<CameraReconciliation::IdTaggedStateUpdateData>
+            //     camera_update_datas_applied_since_last_authorative_state =
+            //         camera_reconciliation.get_update_datas_applied_since_last_authorative_state();
+            //
+            // DataToReconstructLocalSubtickCameraStateWhenFiringOnServer
+            //     data_to_reconstruct_local_subtick_camera_state_when_firing_on_server;
+            //
+            // for (const auto &camera_update_data_applied_since_last_authorative_state :
+            //      camera_update_datas_applied_since_last_authorative_state) {
+            //     data_to_reconstruct_local_subtick_camera_state_when_firing_on_server
+            //         .id_tagged_character_camera_update_datas_applied_since_last_reconciliation.emplace_back(
+            //             camera_update_data_applied_since_last_authorative_state.id,
+            //             camera_update_data_applied_since_last_authorative_state.update_data);
+            // }
+
+            // subtick_hitscan.potentially_fire(const PotentiallyFireContext &pfctx);
+
+            // NOTE: we allow for "local firing" in the sense that we still need to be able to go back in time on the
+            // server so that we can fire accurtely from the players pov, the clients are not authorative, but it's
+            // important for the server to accurately reconstruct the game stae in which the fired without allowing
+            // client to stretch the truth too much (eg you can't shoot at someone really long in the past, cause then
+            // you could kill people before they every saw you)
+            if (fire_tbs.just_switched_on()) { // B
+
+                global_logger->info("fire tbs isj usts witched on");
+
+                // TODO: run local hitscan logic to see if we hit anything, its no longer subtick whatever but now it's
+                // like interpolated? No not even that? actually yeah maybe that... but we just get the state from the
+                // networked interpolator and then we can use that to check if we hit it...
+
+                auto local_fps_camera = tbx_engine.fps_camera;
+
+                auto hitscan_ray = g2j(local_fps_camera.transform.compute_forward_vector() * 1000.0);
+                auto hitscan_ray_origin = physics_character->GetPosition() + physics.eyes_offset_from_center;
+                JPH::RayCast aim_ray(hitscan_ray_origin, hitscan_ray);
+
+                std::unordered_map<unsigned int, Physics::CharacterHitscanContext>
+                    client_id_to_character_hitscan_context;
+                for (auto &[client_id, non_local_client_character_base] :
+                     client_id_to_non_local_client_character_base) {
+                    client_id_to_character_hitscan_context.emplace(
+                        client_id, Physics::CharacterHitscanContext{non_local_client_character_base.physics_character});
+                }
+
+                Physics::HitscanResult hr = physics.fire_hitscan_weapon(aim_ray, client_id_to_character_hitscan_context,
+                                                                        local_client_id, physics.created_body_ids);
+
+                global_logger->info("just fired with yaw={}, pitch={}, position={}",
+                                    local_fps_camera.transform.get_rotation_yaw(),
+                                    local_fps_camera.transform.get_rotation_pitch(),
+                                    meta_program->JPH_Vec3_to_string(hitscan_ray_origin));
+
+                if (hr.hit_character()) {
+                    unsigned int id = *hr.hit_character_id;
+                    auto pos = client_id_to_non_local_client_character_base.at(id).physics_character->GetPosition();
+                    global_logger->info("hit player with id {} they had position {}", id,
+                                        meta_program->JPH_Vec3_to_string(pos));
+                    tbx_engine.sound_system.queue_sound(SoundType::CLIENT_HIT);
+                } else if (hr.hit_world_object()) {
+                    global_logger->info("hit world object body {} at fraction {}", hr.hit_world_body_id->GetIndex(),
+                                        *hr.hit_fraction);
+                    tbx_engine.sound_system.queue_sound(SoundType::CLIENT_MISS);
+                } else {
+                    // nothing was hit
+                    global_logger->info("hit nothing");
+                    tbx_engine.sound_system.queue_sound(SoundType::CLIENT_MISS);
+                }
+            }
+
+            // endfold
         }
-        // endfold
 
-        // startfold queue draw object
-        tbx_engine.process_and_queue_render_input_graphics_sound_menu();
-        tbx_engine.draw_chosen_engine_stats();
-        for (auto &obj : world) {
-            tbx_engine.batcher.cwl_v_transformation_ubos_1024_with_colored_vertex_shader_batcher.queue_draw(obj);
+        {
+            GlobalLogSection _("tick client to server send");
+            // startfold client to server send
+            if (client_to_server_send_signal.process_and_get_signal()) {
+                ClientUpdateData client_update_data;
+                client_update_data.character_update_data_time_bundles =
+                    character_physics_update_data_time_bundler.take_bundles_since_last_send();
+                client_update_data.id = client_update_data_packet_id;
+
+                ClientUpdateDataPacket client_update_data_packet;
+
+                client_update_data_packet.client_update_data = client_update_data;
+                client_update_data_packet.packet_header.type = PacketType::CLIENT_UPDATE_DATA;
+
+                client_update_data_packet.packet_header.size_of_data_without_header =
+                    meta_program->size_when_serialized_ClientUpdateData(client_update_data_packet.client_update_data);
+
+                auto buffer = meta_program->serialize_ClientUpdateDataPacket(client_update_data_packet);
+
+                network.send_packet(buffer.data(), buffer.size());
+                client_update_data_packet_id++;
+                global_logger->info("just sent: {}",
+                                    text_utils::format_nested_braces_string_recursive_with_newlines(
+                                        meta_program->ClientUpdateDataPacket_to_string(client_update_data_packet)));
+
+                for (const auto &bundle :
+                     client_update_data_packet.client_update_data.character_update_data_time_bundles) {
+                    global_logger->info("its time usage is: {}", bundle.total_amount_of_time());
+                }
+            }
+            // endfold
         }
-        tbx_engine.batcher.cwl_v_transformation_ubos_1024_with_colored_vertex_shader_batcher.queue_draw(target_visual);
 
-        tbx_engine.batcher.absolute_position_with_colored_vertex_shader_batcher.queue_draw(crosshair);
-        // endfold
+        {
+            GlobalLogSection _("tick queue draw object");
+            // startfold queue draw object
+            tbx_engine.process_and_queue_render_input_graphics_sound_menu();
+            tbx_engine.draw_chosen_engine_stats();
+            for (auto &obj : world) {
+                tbx_engine.batcher.cwl_v_transformation_ubos_1024_with_colored_vertex_shader_batcher.queue_draw(obj);
+            }
+            tbx_engine.batcher.cwl_v_transformation_ubos_1024_with_colored_vertex_shader_batcher.queue_draw(
+                target_visual);
 
-        // startfold draw and sounds
+            tbx_engine.batcher.absolute_position_with_colored_vertex_shader_batcher.queue_draw(crosshair);
+            // endfold
+        }
 
-        tbx_engine.sound_system.play_all_sounds();
+        {
+            GlobalLogSection _("tick queue draw and sounds");
+            // startfold draw and sounds
 
-        tbx_engine.batcher.absolute_position_with_colored_vertex_shader_batcher.draw_everything();
+            tbx_engine.sound_system.play_all_sounds();
 
-        tbx_engine.batcher.cwl_v_transformation_ubos_1024_with_colored_vertex_shader_batcher.draw_everything();
-        tbx_engine.batcher.cwl_v_transformation_ubos_1024_with_colored_vertex_shader_batcher.upload_ltw_matrices();
+            tbx_engine.batcher.absolute_position_with_colored_vertex_shader_batcher.draw_everything();
 
-        // endfold
+            tbx_engine.batcher.cwl_v_transformation_ubos_1024_with_colored_vertex_shader_batcher.draw_everything();
+            tbx_engine.batcher.cwl_v_transformation_ubos_1024_with_colored_vertex_shader_batcher.upload_ltw_matrices();
 
-        // TODO: I want to do away with this thing I think.
-        TemporalBinarySignal::process_all();
+            // endfold
+        }
+
+        {
+            GlobalLogSection _("tick tbs process all");
+            // TODO: I want to do away with this thing I think.
+            TemporalBinarySignal::process_all();
+        }
+
+        // This is at the bottom because of this:
+        // https://toolbox.cuppajoeman.com/programming/inside_of_fixed_frequency_loops_function_placement_matters.html
+        {
+            GlobalLogSection _("tick network");
+            // startfold network
+            auto packets = network.get_network_events_received_since_last_tick();
+            packet_handler.handle_packets(packets);
+            // endfold
+        }
     };
     std::function<bool()> term = [&]() -> bool { return tbx_engine.window.window_should_close(); };
 
+    tbx_engine.main_loop.logging_enabled = true;
     tbx_engine.start(tick, term);
 
     return 0;

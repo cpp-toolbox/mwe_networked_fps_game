@@ -13,6 +13,7 @@ IdTaggedCharacterPhysicsState interpolate(IdTaggedCharacterPhysicsState start, I
                                           float t) {
 
     IdTaggedCharacterPhysicsState interpolated_id_tagged_character_physics_state = start;
+
     interpolated_id_tagged_character_physics_state.character_physics_state =
         interpolate(start.character_physics_state, end.character_physics_state, t);
 

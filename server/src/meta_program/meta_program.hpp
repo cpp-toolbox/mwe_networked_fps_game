@@ -39,9 +39,7 @@
 #include <optional>
 #include "../utility/meta_utils/meta_utils.hpp"
 #include "../utility/user_input/user_input.hpp"
-
-namespace meta_program {
-
+#include "../utility/lazy_construction/lazy_construction.hpp"
 
 class MetaProgram {
 public:
@@ -314,7 +312,7 @@ public:
         return "";
 
     }
-    meta_utils::MetaType string_to_meta_utils_MetaType() {
+    meta_utils::MetaType string_to_meta_utils_MetaType(meta_utils::MetaType &mt) {
 
     }
     std::vector<uint8_t> serialize_meta_utils_MetaType() {
@@ -9472,7 +9470,6 @@ public:
 };
 
 
-
-} // namespace meta_program
+extern LazyConstruction<MetaProgram, std::vector<meta_utils::MetaType>> meta_program;
 
 #endif // META_PROGRAM_HPP

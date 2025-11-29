@@ -39,9 +39,7 @@
 #include <optional>
 #include "../utility/meta_utils/meta_utils.hpp"
 #include "../utility/user_input/user_input.hpp"
-
-namespace meta_program {
-
+#include "../utility/lazy_construction/lazy_construction.hpp"
 
 class MetaProgram {
 public:
@@ -314,7 +312,7 @@ public:
         return "";
 
     }
-    meta_utils::MetaType string_to_meta_utils_MetaType() {
+    meta_utils::MetaType string_to_meta_utils_MetaType(meta_utils::MetaType &mt) {
 
     }
     std::vector<uint8_t> serialize_meta_utils_MetaType() {
@@ -431,6 +429,7 @@ public:
         switch(value) {
                 case PacketType::CLIENT_UPDATE_DATA: return "PacketType::CLIENT_UPDATE_DATA";
                 case PacketType::GAME_STATE: return "PacketType::GAME_STATE";
+                case PacketType::NUM_ENUMERATORS: return "PacketType::NUM_ENUMERATORS";
                 default: return "<unknown PacketType>";
             }
 
@@ -438,6 +437,7 @@ public:
     PacketType string_to_PacketType(std::string &s) {
         if (s == "PacketType::CLIENT_UPDATE_DATA") return PacketType::CLIENT_UPDATE_DATA;
             if (s == "PacketType::GAME_STATE") return PacketType::GAME_STATE;
+            if (s == "PacketType::NUM_ENUMERATORS") return PacketType::NUM_ENUMERATORS;
             return static_cast<PacketType>(0); // default fallback
 
     }
@@ -466,6 +466,7 @@ public:
             switch(value) {
                 case PacketType::CLIENT_UPDATE_DATA: return "PacketType::CLIENT_UPDATE_DATA";
                 case PacketType::GAME_STATE: return "PacketType::GAME_STATE";
+                case PacketType::NUM_ENUMERATORS: return "PacketType::NUM_ENUMERATORS";
                 default: return "<unknown PacketType>";
             }
         };
@@ -489,6 +490,7 @@ public:
                     auto conv = [=](const std::string &s) -> PacketType {
             if (s == "PacketType::CLIENT_UPDATE_DATA") return PacketType::CLIENT_UPDATE_DATA;
             if (s == "PacketType::GAME_STATE") return PacketType::GAME_STATE;
+            if (s == "PacketType::NUM_ENUMERATORS") return PacketType::NUM_ENUMERATORS;
             return static_cast<PacketType>(0); // default fallback
         };
                     obj.type = conv(value_str);
@@ -5338,6 +5340,7 @@ public:
             switch(value) {
                 case PacketType::CLIENT_UPDATE_DATA: return "PacketType::CLIENT_UPDATE_DATA";
                 case PacketType::GAME_STATE: return "PacketType::GAME_STATE";
+                case PacketType::NUM_ENUMERATORS: return "PacketType::NUM_ENUMERATORS";
                 default: return "<unknown PacketType>";
             }
         };
@@ -5384,6 +5387,7 @@ public:
                     auto conv = [=](const std::string &s) -> PacketType {
             if (s == "PacketType::CLIENT_UPDATE_DATA") return PacketType::CLIENT_UPDATE_DATA;
             if (s == "PacketType::GAME_STATE") return PacketType::GAME_STATE;
+            if (s == "PacketType::NUM_ENUMERATORS") return PacketType::NUM_ENUMERATORS;
             return static_cast<PacketType>(0); // default fallback
         };
                     obj.type = conv(value_str);
@@ -6639,6 +6643,7 @@ public:
             switch(value) {
                 case PacketType::CLIENT_UPDATE_DATA: return "PacketType::CLIENT_UPDATE_DATA";
                 case PacketType::GAME_STATE: return "PacketType::GAME_STATE";
+                case PacketType::NUM_ENUMERATORS: return "PacketType::NUM_ENUMERATORS";
                 default: return "<unknown PacketType>";
             }
         };
@@ -6819,6 +6824,7 @@ public:
                     auto conv = [=](const std::string &s) -> PacketType {
             if (s == "PacketType::CLIENT_UPDATE_DATA") return PacketType::CLIENT_UPDATE_DATA;
             if (s == "PacketType::GAME_STATE") return PacketType::GAME_STATE;
+            if (s == "PacketType::NUM_ENUMERATORS") return PacketType::NUM_ENUMERATORS;
             return static_cast<PacketType>(0); // default fallback
         };
                     obj.type = conv(value_str);
@@ -8594,6 +8600,7 @@ public:
             switch(value) {
                 case PacketType::CLIENT_UPDATE_DATA: return "PacketType::CLIENT_UPDATE_DATA";
                 case PacketType::GAME_STATE: return "PacketType::GAME_STATE";
+                case PacketType::NUM_ENUMERATORS: return "PacketType::NUM_ENUMERATORS";
                 default: return "<unknown PacketType>";
             }
         };
@@ -8732,6 +8739,7 @@ public:
                     auto conv = [=](const std::string &s) -> PacketType {
             if (s == "PacketType::CLIENT_UPDATE_DATA") return PacketType::CLIENT_UPDATE_DATA;
             if (s == "PacketType::GAME_STATE") return PacketType::GAME_STATE;
+            if (s == "PacketType::NUM_ENUMERATORS") return PacketType::NUM_ENUMERATORS;
             return static_cast<PacketType>(0); // default fallback
         };
                     obj.type = conv(value_str);
@@ -9472,7 +9480,6 @@ public:
 };
 
 
-
-} // namespace meta_program
+extern LazyConstruction<MetaProgram, std::vector<meta_utils::MetaType>> meta_program;
 
 #endif // META_PROGRAM_HPP

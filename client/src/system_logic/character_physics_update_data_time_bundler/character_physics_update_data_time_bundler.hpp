@@ -35,23 +35,23 @@ class CharacterPhysicsUpdateDataTimeBundler {
     }
 
     double get_bundle_constrained_dt(double dt) {
-        LogSection _(global_logger, "get_bundle_constrained_dt");
+        GlobalLogSection _("get_bundle_constrained_dt");
 
-        global_logger.debug("Input dt = {}", dt);
-        global_logger.debug("Initial state: carry_dt = {}, bundle_accumulated_dt = {}, server_dt = {}", carry_dt,
-                            bundle_accumulated_dt, server_dt);
+        global_logger->debug("Input dt = {}", dt);
+        global_logger->debug("Initial state: carry_dt = {}, bundle_accumulated_dt = {}, server_dt = {}", carry_dt,
+                             bundle_accumulated_dt, server_dt);
 
         // Step 1: Apply carry_dt from previous call
         if (carry_dt != 0) {
-            global_logger.debug("Applying carry_dt: {} + {} = {}", dt, carry_dt, dt + carry_dt);
+            global_logger->debug("Applying carry_dt: {} + {} = {}", dt, carry_dt, dt + carry_dt);
             dt += carry_dt;
             carry_dt = 0;
         }
 
         double remaining_time_in_current_bundle = server_dt - bundle_accumulated_dt;
 
-        global_logger.debug("Remaining time in current bundle = server_dt ({}) - bundle_accumulated_dt ({}) = {}",
-                            server_dt, bundle_accumulated_dt, remaining_time_in_current_bundle);
+        global_logger->debug("Remaining time in current bundle = server_dt ({}) - bundle_accumulated_dt ({}) = {}",
+                             server_dt, bundle_accumulated_dt, remaining_time_in_current_bundle);
 
         bool time_to_create_new_bundle = dt > remaining_time_in_current_bundle;
         if (time_to_create_new_bundle) {
@@ -59,19 +59,19 @@ class CharacterPhysicsUpdateDataTimeBundler {
             bundle_accumulated_dt = 0;
             auto usable_dt = remaining_time_in_current_bundle;
 
-            global_logger.debug("dt ({}) > remaining_time_in_current_bundle ({}): creating new bundle", dt,
-                                remaining_time_in_current_bundle);
+            global_logger->debug("dt ({}) > remaining_time_in_current_bundle ({}): creating new bundle", dt,
+                                 remaining_time_in_current_bundle);
 
-            global_logger.debug("Usable dt for this bundle = {}", usable_dt);
-            global_logger.debug("Carrying leftover dt = dt - usable_dt = {} - {} = {}", dt, usable_dt, dt - usable_dt);
+            global_logger->debug("Usable dt for this bundle = {}", usable_dt);
+            global_logger->debug("Carrying leftover dt = dt - usable_dt = {} - {} = {}", dt, usable_dt, dt - usable_dt);
 
             // bundle_accumulated_dt += usable_dt;
             carry_dt = dt - remaining_time_in_current_bundle;
 
-            global_logger.debug("New state after filling bundle:");
-            global_logger.debug("  bundle_accumulated_dt = {}", bundle_accumulated_dt);
-            global_logger.debug("  carry_dt = {}", carry_dt);
-            global_logger.debug("  current_bundle_is_filled = {}", create_new_bundle_after_next_registration);
+            global_logger->debug("New state after filling bundle:");
+            global_logger->debug("  bundle_accumulated_dt = {}", bundle_accumulated_dt);
+            global_logger->debug("  carry_dt = {}", carry_dt);
+            global_logger->debug("  current_bundle_is_filled = {}", create_new_bundle_after_next_registration);
 
             return usable_dt;
         }
@@ -80,8 +80,8 @@ class CharacterPhysicsUpdateDataTimeBundler {
         bundle_accumulated_dt += dt;
         auto usable_dt = dt;
 
-        global_logger.debug("dt ({}) fits in the current bundle.", dt);
-        global_logger.debug("Updated bundle_accumulated_dt = {}", bundle_accumulated_dt);
+        global_logger->debug("dt ({}) fits in the current bundle.", dt);
+        global_logger->debug("Updated bundle_accumulated_dt = {}", bundle_accumulated_dt);
 
         return usable_dt;
     }

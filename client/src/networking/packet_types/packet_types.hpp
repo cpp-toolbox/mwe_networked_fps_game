@@ -3,6 +3,6 @@
 
 #include <cstdint>
 
-enum class PacketType : uint8_t { CLIENT_UPDATE_DATA, GAME_STATE };
+enum class PacketType : uint8_t { CLIENT_UPDATE_DATA, GAME_STATE, NUM_ENUMERATORS };
 
 #endif // PACKET_TYPES_HPP
