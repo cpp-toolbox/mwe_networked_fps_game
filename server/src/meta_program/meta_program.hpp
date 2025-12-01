@@ -326,7 +326,7 @@ public:
 
     }
     std::string glm_vec2_to_string(glm::vec2 &v) {
-        std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ')';   return oss.str();
+        int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ')'; return oss.str();
 
     }
     glm::vec2 string_to_glm_vec2(std::string &s) {
@@ -346,7 +346,7 @@ public:
 
     }
     std::string glm_vec3_to_string(glm::vec3 &v) {
-        std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str();
+        int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();
 
     }
     glm::vec3 string_to_glm_vec3(std::string &s) {
@@ -386,7 +386,7 @@ public:
 
     }
     std::string JPH_Vec3_to_string(JPH::Vec3 &v) {
-        std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str();
+        std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str();
 
     }
     JPH::Vec3 string_to_JPH_Vec3(std::string &s) {
@@ -1167,10 +1167,10 @@ public:
     std::string CharacterPhysicsState_to_string(CharacterPhysicsState obj) {
         std::ostringstream oss;
             oss << "{";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "position=" << conv(obj.position); }
             oss << ", ";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "velocity=" << conv(obj.velocity); }
             oss << "}";
             return oss.str();
@@ -1251,10 +1251,10 @@ public:
             { auto conv = [=](const CharacterPhysicsState& obj) -> std::string {
             std::ostringstream oss;
             oss << "{";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "position=" << conv(obj.position); }
             oss << ", ";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "velocity=" << conv(obj.velocity); }
             oss << "}";
             return oss.str();
@@ -1423,7 +1423,7 @@ public:
         };
               oss << "client_input_state=" << conv(obj.client_input_state); }
             oss << ", ";
-            { auto conv = [](const glm::vec3 &v) {   std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str(); };
+            { auto conv = [](const glm::vec3 &v) {  int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();};
               oss << "xy_forward_vector_camera=" << conv(obj.xy_forward_vector_camera); }
             oss << "}";
             return oss.str();
@@ -1684,7 +1684,7 @@ public:
         };
               oss << "client_input_state=" << conv(obj.client_input_state); }
             oss << ", ";
-            { auto conv = [](const glm::vec3 &v) {   std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str(); };
+            { auto conv = [](const glm::vec3 &v) {  int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();};
               oss << "xy_forward_vector_camera=" << conv(obj.xy_forward_vector_camera); }
             oss << "}";
             return oss.str();
@@ -2885,7 +2885,7 @@ public:
         };
               oss << "client_input_state=" << conv(obj.client_input_state); }
             oss << ", ";
-            { auto conv = [](const glm::vec3 &v) {   std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str(); };
+            { auto conv = [](const glm::vec3 &v) {  int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();};
               oss << "xy_forward_vector_camera=" << conv(obj.xy_forward_vector_camera); }
             oss << "}";
             return oss.str();
@@ -3604,7 +3604,7 @@ public:
         };
               oss << "client_input_state=" << conv(obj.client_input_state); }
             oss << ", ";
-            { auto conv = [](const glm::vec3 &v) {   std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str(); };
+            { auto conv = [](const glm::vec3 &v) {  int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();};
               oss << "xy_forward_vector_camera=" << conv(obj.xy_forward_vector_camera); }
             oss << "}";
             return oss.str();
@@ -4397,7 +4397,7 @@ public:
         };
               oss << "client_input_state=" << conv(obj.client_input_state); }
             oss << ", ";
-            { auto conv = [](const glm::vec3 &v) {   std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str(); };
+            { auto conv = [](const glm::vec3 &v) {  int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();};
               oss << "xy_forward_vector_camera=" << conv(obj.xy_forward_vector_camera); }
             oss << "}";
             return oss.str();
@@ -5606,7 +5606,7 @@ public:
         };
               oss << "client_input_state=" << conv(obj.client_input_state); }
             oss << ", ";
-            { auto conv = [](const glm::vec3 &v) {   std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str(); };
+            { auto conv = [](const glm::vec3 &v) {  int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();};
               oss << "xy_forward_vector_camera=" << conv(obj.xy_forward_vector_camera); }
             oss << "}";
             return oss.str();
@@ -6701,7 +6701,7 @@ public:
         };
               oss << "client_input_state=" << conv(obj.client_input_state); }
             oss << ", ";
-            { auto conv = [](const glm::vec3 &v) {   std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str(); };
+            { auto conv = [](const glm::vec3 &v) {  int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();};
               oss << "xy_forward_vector_camera=" << conv(obj.xy_forward_vector_camera); }
             oss << "}";
             return oss.str();
@@ -7890,10 +7890,10 @@ public:
             { auto conv = [=](const CharacterPhysicsState& obj) -> std::string {
             std::ostringstream oss;
             oss << "{";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "position=" << conv(obj.position); }
             oss << ", ";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "velocity=" << conv(obj.velocity); }
             oss << "}";
             return oss.str();
@@ -7936,10 +7936,10 @@ public:
             { auto conv = [=](const CharacterPhysicsState& obj) -> std::string {
             std::ostringstream oss;
             oss << "{";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "position=" << conv(obj.position); }
             oss << ", ";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "velocity=" << conv(obj.velocity); }
             oss << "}";
             return oss.str();
@@ -8619,10 +8619,10 @@ public:
             { auto conv = [=](const CharacterPhysicsState& obj) -> std::string {
             std::ostringstream oss;
             oss << "{";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "position=" << conv(obj.position); }
             oss << ", ";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "velocity=" << conv(obj.velocity); }
             oss << "}";
             return oss.str();
@@ -8665,10 +8665,10 @@ public:
             { auto conv = [=](const CharacterPhysicsState& obj) -> std::string {
             std::ostringstream oss;
             oss << "{";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "position=" << conv(obj.position); }
             oss << ", ";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "velocity=" << conv(obj.velocity); }
             oss << "}";
             return oss.str();

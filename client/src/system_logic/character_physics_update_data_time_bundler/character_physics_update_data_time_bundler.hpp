@@ -8,6 +8,7 @@
  * @brief you should be calling get bundle constrained dt, and then the  register cpud in that order for this to run
  * properly
  *
+ *
  */
 class CharacterPhysicsUpdateDataTimeBundler {
   public:
@@ -22,6 +23,8 @@ class CharacterPhysicsUpdateDataTimeBundler {
     CharacterUpdateDataTimeBundle current_bundle;
     // NOTE: mentally there's only ever going to be one bundle to send over, but it's possible if we have an empty tick
     // that we'd send two on the next tick and that's why thisis a vector
+    // instead if we synchronize on the size of this ie, only send out when enough time has passed then this can be done
+    // cleaner.
     std::vector<CharacterUpdateDataTimeBundle> bundles_since_last_client_to_server_send;
 
   public:
@@ -34,6 +37,10 @@ class CharacterPhysicsUpdateDataTimeBundler {
         return bundles_since_last_client_to_server_send;
     }
 
+    /**
+     * @note When the frequency at which this is called is not an integer multiple of the server send frequency it will
+     * cause the last dt to be smaller (think quotient remainder theorem)
+     */
     double get_bundle_constrained_dt(double dt) {
         GlobalLogSection _("get_bundle_constrained_dt");
 
@@ -41,7 +48,7 @@ class CharacterPhysicsUpdateDataTimeBundler {
         global_logger->debug("Initial state: carry_dt = {}, bundle_accumulated_dt = {}, server_dt = {}", carry_dt,
                              bundle_accumulated_dt, server_dt);
 
-        // Step 1: Apply carry_dt from previous call
+        // apply carry_dt from previous call
         if (carry_dt != 0) {
             global_logger->debug("Applying carry_dt: {} + {} = {}", dt, carry_dt, dt + carry_dt);
             dt += carry_dt;
@@ -53,8 +60,8 @@ class CharacterPhysicsUpdateDataTimeBundler {
         global_logger->debug("Remaining time in current bundle = server_dt ({}) - bundle_accumulated_dt ({}) = {}",
                              server_dt, bundle_accumulated_dt, remaining_time_in_current_bundle);
 
-        bool time_to_create_new_bundle = dt > remaining_time_in_current_bundle;
-        if (time_to_create_new_bundle) {
+        bool should_create_new_bundle = dt > remaining_time_in_current_bundle;
+        if (should_create_new_bundle) {
             create_new_bundle_after_next_registration = true;
             bundle_accumulated_dt = 0;
             auto usable_dt = remaining_time_in_current_bundle;
@@ -104,8 +111,8 @@ class CharacterPhysicsUpdateDataTimeBundler {
         create_new_bundle_after_next_registration = false;
     }
 
-    /// @brief Get all bundles accumulated since last call and clear the storage, the current bundle will not be in
-    /// here.
+    /// @brief Get all bundles accumulated since last call and clear the storage, the current (incomplete) bundle will
+    /// not be in here.
     std::vector<CharacterUpdateDataTimeBundle> take_bundles_since_last_send() {
         std::vector<CharacterUpdateDataTimeBundle> result = std::move(bundles_since_last_client_to_server_send);
         bundles_since_last_client_to_server_send.clear(); // just to be safe, though move already empties it

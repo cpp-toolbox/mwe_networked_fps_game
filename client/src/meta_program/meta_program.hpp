@@ -48,263 +48,263 @@ public:
 
 public:
     std::vector<meta_utils::MetaType>  concrete_types;
-    std::string char_to_string(char &v) {
+    std::string char_to_string(const char &v) {
         return std::to_string(v);
 
     }
-    char string_to_char(std::string &s) {
+    char string_to_char(const std::string &s) {
         return static_cast<char>(s.empty() ? 0 : s[0]);
 
     }
-    std::vector<uint8_t> serialize_char(char &v) {
+    std::vector<uint8_t> serialize_char(const char &v) {
         std::vector<uint8_t> buf(sizeof(char));   std::memcpy(buf.data(), &v, sizeof(char));   return buf;
 
     }
-    size_t size_when_serialized_char(char &v) {
+    size_t size_when_serialized_char(const char &v) {
         return sizeof(char);
 
     }
-    char deserialize_char(std::vector<uint8_t> &buf) {
+    char deserialize_char(const std::vector<uint8_t> &buf) {
         char v;   std::memcpy(&v, buf.data(), sizeof(char));   return v;
 
     }
-    std::string int_to_string(int &v) {
+    std::string int_to_string(const int &v) {
         return std::to_string(v);
 
     }
-    int string_to_int(std::string &s) {
+    int string_to_int(const std::string &s) {
         return std::stoi(s);
 
     }
-    std::vector<uint8_t> serialize_int(int &v) {
+    std::vector<uint8_t> serialize_int(const int &v) {
         std::vector<uint8_t> buf(sizeof(int));   std::memcpy(buf.data(), &v, sizeof(int));   return buf;
 
     }
-    size_t size_when_serialized_int(int &v) {
+    size_t size_when_serialized_int(const int &v) {
         return sizeof(int);
 
     }
-    int deserialize_int(std::vector<uint8_t> &buf) {
+    int deserialize_int(const std::vector<uint8_t> &buf) {
         int v;   std::memcpy(&v, buf.data(), sizeof(int));   return v;
 
     }
-    std::string unsigned_int_to_string(unsigned int &v) {
+    std::string unsigned_int_to_string(const unsigned int &v) {
         return std::to_string(v);
 
     }
-    unsigned int string_to_unsigned_int(std::string &s) {
+    unsigned int string_to_unsigned_int(const std::string &s) {
         return static_cast<unsigned int>(std::stoul(s));
 
     }
-    std::vector<uint8_t> serialize_unsigned_int(unsigned int &v) {
+    std::vector<uint8_t> serialize_unsigned_int(const unsigned int &v) {
         std::vector<uint8_t> buf(sizeof(unsigned int));   std::memcpy(buf.data(), &v, sizeof(unsigned int));   return buf;
 
     }
-    size_t size_when_serialized_unsigned_int(unsigned int &v) {
+    size_t size_when_serialized_unsigned_int(const unsigned int &v) {
         return sizeof(unsigned int);
 
     }
-    unsigned int deserialize_unsigned_int(std::vector<uint8_t> &buf) {
+    unsigned int deserialize_unsigned_int(const std::vector<uint8_t> &buf) {
         unsigned int v;   std::memcpy(&v, buf.data(), sizeof(unsigned int));   return v;
 
     }
-    std::string uint8_t_to_string(uint8_t &v) {
+    std::string uint8_t_to_string(const uint8_t &v) {
         return std::to_string(v);
 
     }
-    uint8_t string_to_uint8_t(std::string &s) {
+    uint8_t string_to_uint8_t(const std::string &s) {
         return static_cast<uint8_t>(std::stoul(s));
 
     }
-    std::vector<uint8_t> serialize_uint8_t(uint8_t &v) {
+    std::vector<uint8_t> serialize_uint8_t(const uint8_t &v) {
         std::vector<uint8_t> buf(sizeof(uint8_t));   std::memcpy(buf.data(), &v, sizeof(uint8_t));   return buf;
 
     }
-    size_t size_when_serialized_uint8_t(uint8_t &v) {
+    size_t size_when_serialized_uint8_t(const uint8_t &v) {
         return sizeof(uint8_t);
 
     }
-    uint8_t deserialize_uint8_t(std::vector<uint8_t> &buf) {
+    uint8_t deserialize_uint8_t(const std::vector<uint8_t> &buf) {
         uint8_t v;   std::memcpy(&v, buf.data(), sizeof(uint8_t));   return v;
 
     }
-    std::string uint32_t_to_string(uint32_t &v) {
+    std::string uint32_t_to_string(const uint32_t &v) {
         return std::to_string(v);
 
     }
-    uint32_t string_to_uint32_t(std::string &s) {
+    uint32_t string_to_uint32_t(const std::string &s) {
         return static_cast<uint32_t>(std::stoul(s));
 
     }
-    std::vector<uint8_t> serialize_uint32_t(uint32_t &v) {
+    std::vector<uint8_t> serialize_uint32_t(const uint32_t &v) {
         std::vector<uint8_t> buf(sizeof(uint32_t));   std::memcpy(buf.data(), &v, sizeof(uint32_t));   return buf;
 
     }
-    size_t size_when_serialized_uint32_t(uint32_t &v) {
+    size_t size_when_serialized_uint32_t(const uint32_t &v) {
         return sizeof(uint32_t);
 
     }
-    uint32_t deserialize_uint32_t(std::vector<uint8_t> &buf) {
+    uint32_t deserialize_uint32_t(const std::vector<uint8_t> &buf) {
         uint32_t v;   std::memcpy(&v, buf.data(), sizeof(uint32_t));   return v;
 
     }
-    std::string size_t_to_string(size_t &v) {
+    std::string size_t_to_string(const size_t &v) {
         return std::to_string(v);
 
     }
-    size_t string_to_size_t(std::string &s) {
+    size_t string_to_size_t(const std::string &s) {
         return static_cast<size_t>(std::stoull(s));
 
     }
-    std::vector<uint8_t> serialize_size_t(size_t &v) {
+    std::vector<uint8_t> serialize_size_t(const size_t &v) {
         std::vector<uint8_t> buf(sizeof(size_t));   std::memcpy(buf.data(), &v, sizeof(size_t));   return buf;
 
     }
-    size_t size_when_serialized_size_t(size_t &v) {
+    size_t size_when_serialized_size_t(const size_t &v) {
         return sizeof(size_t);
 
     }
-    size_t deserialize_size_t(std::vector<uint8_t> &buf) {
+    size_t deserialize_size_t(const std::vector<uint8_t> &buf) {
         size_t v;   std::memcpy(&v, buf.data(), sizeof(size_t));   return v;
 
     }
-    std::string float_to_string(float &v) {
+    std::string float_to_string(const float &v) {
         std::ostringstream oss;  oss << std::setprecision(std::numeric_limits<float>::max_digits10) << v;  return oss.str();
 
     }
-    float string_to_float(std::string &s) {
+    float string_to_float(const std::string &s) {
         return std::stof(s);
 
     }
-    std::vector<uint8_t> serialize_float(float &v) {
+    std::vector<uint8_t> serialize_float(const float &v) {
         std::vector<uint8_t> buf(sizeof(float));   std::memcpy(buf.data(), &v, sizeof(float));   return buf;
 
     }
-    size_t size_when_serialized_float(float &v) {
+    size_t size_when_serialized_float(const float &v) {
         return sizeof(float);
 
     }
-    float deserialize_float(std::vector<uint8_t> &buf) {
+    float deserialize_float(const std::vector<uint8_t> &buf) {
         float v;   std::memcpy(&v, buf.data(), sizeof(float));   return v;
 
     }
-    std::string double_to_string(double &v) {
+    std::string double_to_string(const double &v) {
         std::ostringstream oss;  oss << std::setprecision(std::numeric_limits<double>::max_digits10) << v;  return oss.str();
 
     }
-    double string_to_double(std::string &s) {
+    double string_to_double(const std::string &s) {
         return std::stod(s);
 
     }
-    std::vector<uint8_t> serialize_double(double &v) {
+    std::vector<uint8_t> serialize_double(const double &v) {
         std::vector<uint8_t> buf(sizeof(double));   std::memcpy(buf.data(), &v, sizeof(double));   return buf;
 
     }
-    size_t size_when_serialized_double(double &v) {
+    size_t size_when_serialized_double(const double &v) {
         return sizeof(double);
 
     }
-    double deserialize_double(std::vector<uint8_t> &buf) {
+    double deserialize_double(const std::vector<uint8_t> &buf) {
         double v;   std::memcpy(&v, buf.data(), sizeof(double));   return v;
 
     }
-    std::string short_to_string(short &v) {
+    std::string short_to_string(const short &v) {
         return std::to_string(v);
 
     }
-    short string_to_short(std::string &s) {
+    short string_to_short(const std::string &s) {
         return static_cast<short>(std::stoi(s));
 
     }
-    std::vector<uint8_t> serialize_short(short &v) {
+    std::vector<uint8_t> serialize_short(const short &v) {
         std::vector<uint8_t> buf(sizeof(short));   std::memcpy(buf.data(), &v, sizeof(short));   return buf;
 
     }
-    size_t size_when_serialized_short(short &v) {
+    size_t size_when_serialized_short(const short &v) {
         return sizeof(short);
 
     }
-    short deserialize_short(std::vector<uint8_t> &buf) {
+    short deserialize_short(const std::vector<uint8_t> &buf) {
         short v;   std::memcpy(&v, buf.data(), sizeof(short));   return v;
 
     }
-    std::string long_to_string(long &v) {
+    std::string long_to_string(const long &v) {
         return std::to_string(v);
 
     }
-    long string_to_long(std::string &s) {
+    long string_to_long(const std::string &s) {
         return std::stol(s);
 
     }
-    std::vector<uint8_t> serialize_long(long &v) {
+    std::vector<uint8_t> serialize_long(const long &v) {
         std::vector<uint8_t> buf(sizeof(long));   std::memcpy(buf.data(), &v, sizeof(long));   return buf;
 
     }
-    size_t size_when_serialized_long(long &v) {
+    size_t size_when_serialized_long(const long &v) {
         return sizeof(long);
 
     }
-    long deserialize_long(std::vector<uint8_t> &buf) {
+    long deserialize_long(const std::vector<uint8_t> &buf) {
         long v;   std::memcpy(&v, buf.data(), sizeof(long));   return v;
 
     }
-    std::string std_string_to_string(std::string &s) {
+    std::string std_string_to_string(const std::string &s) {
         return s;
 
     }
-    std::string string_to_std_string(std::string &s) {
+    std::string string_to_std_string(const std::string &s) {
         if (s.size() >= 2 && s.front() == '"' && s.back() == '"')     return s.substr(1, s.size() - 2);   return s;
 
     }
-    std::vector<uint8_t> serialize_std_string(std::string &v) {
+    std::vector<uint8_t> serialize_std_string(const std::string &v) {
         std::vector<uint8_t> buf;   size_t len = v.size();   buf.resize(sizeof(size_t) + len);   std::memcpy(buf.data(), &len, sizeof(size_t));   std::memcpy(buf.data() + sizeof(size_t), v.data(), len);   return buf;
 
     }
-    size_t size_when_serialized_std_string(std::string &v) {
+    size_t size_when_serialized_std_string(const std::string &v) {
         return sizeof(size_t) + v.size();
 
     }
-    std::string deserialize_std_string(std::vector<uint8_t> &buf) {
+    std::string deserialize_std_string(const std::vector<uint8_t> &buf) {
         if (buf.size() < sizeof(size_t)) return std::string();   size_t len;   std::memcpy(&len, buf.data(), sizeof(size_t));   if (buf.size() < sizeof(size_t) + len) return std::string();   return std::string(reinterpret_cast<const char*>(buf.data() + sizeof(size_t)), len);
 
     }
-    std::string std_filesystem_path_to_string(std::filesystem::path &p) {
+    std::string std_filesystem_path_to_string(const std::filesystem::path &p) {
         return p.string();
 
     }
-    std::filesystem::path string_to_std_filesystem_path(std::string &s) {
+    std::filesystem::path string_to_std_filesystem_path(const std::string &s) {
         if (s.size() >= 2 && s.front() == '"' && s.back() == '"')     return std::filesystem::path(s.substr(1, s.size() - 2));   return std::filesystem::path(s);
 
     }
-    std::vector<uint8_t> serialize_std_filesystem_path(std::filesystem::path &p) {
+    std::vector<uint8_t> serialize_std_filesystem_path(const std::filesystem::path &p) {
         std::string s = p.string();   std::vector<uint8_t> buf;   size_t len = s.size();   buf.resize(sizeof(size_t) + len);   std::memcpy(buf.data(), &len, sizeof(size_t));   std::memcpy(buf.data() + sizeof(size_t), s.data(), len);   return buf;
 
     }
-    size_t size_when_serialized_std_filesystem_path(std::filesystem::path &p) {
+    size_t size_when_serialized_std_filesystem_path(const std::filesystem::path &p) {
         std::string s = p.string();   return sizeof(size_t) + s.size();
 
     }
-    std::filesystem::path deserialize_std_filesystem_path(std::vector<uint8_t> &buf) {
+    std::filesystem::path deserialize_std_filesystem_path(const std::vector<uint8_t> &buf) {
         if (buf.size() < sizeof(size_t)) return std::filesystem::path();   size_t len;   std::memcpy(&len, buf.data(), sizeof(size_t));   if (buf.size() < sizeof(size_t) + len) return std::filesystem::path();   return std::filesystem::path(std::string(reinterpret_cast<const char*>(buf.data() + sizeof(size_t)), len));
 
     }
-    std::string bool_to_string(bool &v) {
+    std::string bool_to_string(const bool &v) {
         return v ? "true" : "false";
 
     }
-    bool string_to_bool(std::string &s) {
+    bool string_to_bool(const std::string &s) {
         return s == "true";
 
     }
-    std::vector<uint8_t> serialize_bool(bool &v) {
+    std::vector<uint8_t> serialize_bool(const bool &v) {
         std::vector<uint8_t> buf(1);   buf[0] = v ? 1 : 0;   return buf;
 
     }
-    size_t size_when_serialized_bool(bool &v) {
+    size_t size_when_serialized_bool(const bool &v) {
         return sizeof(uint8_t);
 
     }
-    bool deserialize_bool(std::vector<uint8_t> &buf) {
+    bool deserialize_bool(const std::vector<uint8_t> &buf) {
         return buf[0] != 0;
 
     }
@@ -312,116 +312,116 @@ public:
         return "";
 
     }
-    meta_utils::MetaType string_to_meta_utils_MetaType(meta_utils::MetaType &mt) {
+    meta_utils::MetaType string_to_meta_utils_MetaType(const meta_utils::MetaType &mt) {
 
     }
     std::vector<uint8_t> serialize_meta_utils_MetaType() {
 
     }
-    size_t size_when_serialized_meta_utils_MetaType(meta_utils::MetaType &v) {
+    size_t size_when_serialized_meta_utils_MetaType(const meta_utils::MetaType &v) {
         return sizeof(meta_utils::MetaType);
 
     }
     meta_utils::MetaType deserialize_meta_utils_MetaType() {
 
     }
-    std::string glm_vec2_to_string(glm::vec2 &v) {
-        std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ')';   return oss.str();
+    std::string glm_vec2_to_string(const glm::vec2 &v) {
+        int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ')'; return oss.str();
 
     }
-    glm::vec2 string_to_glm_vec2(std::string &s) {
+    glm::vec2 string_to_glm_vec2(const std::string &s) {
         std::regex r(R"(\s*\(?\s*([-+]?[0-9]*\.?[0-9]+)\s*,\s*([-+]?[0-9]*\.?[0-9]+)\s*\)?\s*)");   std::smatch m;   if (std::regex_match(s, m, r)) {     return glm::vec2(std::stof(m[1]), std::stof(m[2]));   }   throw std::invalid_argument("Invalid glm::vec2 string");
 
     }
-    std::vector<uint8_t> serialize_glm_vec2(glm::vec2 &v) {
+    std::vector<uint8_t> serialize_glm_vec2(const glm::vec2 &v) {
         std::vector<uint8_t> buf(sizeof(glm::vec2));   std::memcpy(buf.data(), &v, sizeof(glm::vec2));   return buf;
 
     }
-    size_t size_when_serialized_glm_vec2(glm::vec2 &v) {
+    size_t size_when_serialized_glm_vec2(const glm::vec2 &v) {
         return sizeof(glm::vec2);
 
     }
-    glm::vec2 deserialize_glm_vec2(std::vector<uint8_t> &buf) {
+    glm::vec2 deserialize_glm_vec2(const std::vector<uint8_t> &buf) {
         glm::vec2 v;   std::memcpy(&v, buf.data(), sizeof(glm::vec2));   return v;
 
     }
-    std::string glm_vec3_to_string(glm::vec3 &v) {
-        std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str();
+    std::string glm_vec3_to_string(const glm::vec3 &v) {
+        int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();
 
     }
-    glm::vec3 string_to_glm_vec3(std::string &s) {
+    glm::vec3 string_to_glm_vec3(const std::string &s) {
         std::regex r(R"(\s*\(?\s*([-+]?[0-9]*\.?[0-9]+)\s*,\s*([-+]?[0-9]*\.?[0-9]+)\s*,\s*([-+]?[0-9]*\.?[0-9]+)\s*\)?\s*)");   std::smatch m;   if (std::regex_match(s, m, r)) {     return glm::vec3(std::stof(m[1]), std::stof(m[2]), std::stof(m[3]));   }   throw std::invalid_argument("Invalid glm::vec3 string");
 
     }
-    std::vector<uint8_t> serialize_glm_vec3(glm::vec3 &v) {
+    std::vector<uint8_t> serialize_glm_vec3(const glm::vec3 &v) {
         std::vector<uint8_t> buf(sizeof(glm::vec3));   std::memcpy(buf.data(), &v, sizeof(glm::vec3));   return buf;
 
     }
-    size_t size_when_serialized_glm_vec3(glm::vec3 &v) {
+    size_t size_when_serialized_glm_vec3(const glm::vec3 &v) {
         return sizeof(glm::vec3);
 
     }
-    glm::vec3 deserialize_glm_vec3(std::vector<uint8_t> &buf) {
+    glm::vec3 deserialize_glm_vec3(const std::vector<uint8_t> &buf) {
         glm::vec3 v;   std::memcpy(&v, buf.data(), sizeof(glm::vec3));   return v;
 
     }
-    std::string glm_mat4_to_string(glm::mat4 &m) {
+    std::string glm_mat4_to_string(const glm::mat4 &m) {
         std::ostringstream oss;   oss << '[' << m[0][0] << ", " << m[0][1] << ", " << m[0][2] << ", " << m[0][3] << "]\n"       << '[' << m[1][0] << ", " << m[1][1] << ", " << m[1][2] << ", " << m[1][3] << "]\n"       << '[' << m[2][0] << ", " << m[2][1] << ", " << m[2][2] << ", " << m[2][3] << "]\n"       << '[' << m[3][0] << ", " << m[3][1] << ", " << m[3][2] << ", " << m[3][3] << ']';   return oss.str();
 
     }
-    glm::mat4 string_to_glm_mat4(std::string &s) {
+    glm::mat4 string_to_glm_mat4(const std::string &s) {
         std::regex r(R"(([-+]?[0-9]*\.?[0-9]+))");   std::sregex_iterator it(s.begin(), s.end(), r), end;   std::vector<float> vals;   for (; it != end; ++it) vals.push_back(std::stof((*it)[1]));   if (vals.size() != 16)     throw std::invalid_argument("Invalid glm::mat4 string; expected 16 floats");   return glm::make_mat4(vals.data());
 
     }
-    std::vector<uint8_t> serialize_glm_mat4(glm::mat4 &m) {
+    std::vector<uint8_t> serialize_glm_mat4(const glm::mat4 &m) {
         std::vector<uint8_t> buf(sizeof(glm::mat4));   std::memcpy(buf.data(), &m, sizeof(glm::mat4));   return buf;
 
     }
-    size_t size_when_serialized_glm_mat4(glm::mat4 &m) {
+    size_t size_when_serialized_glm_mat4(const glm::mat4 &m) {
         return sizeof(glm::mat4);
 
     }
-    glm::mat4 deserialize_glm_mat4(std::vector<uint8_t> &buf) {
+    glm::mat4 deserialize_glm_mat4(const std::vector<uint8_t> &buf) {
         glm::mat4 m;   std::memcpy(&m, buf.data(), sizeof(glm::mat4));   return m;
 
     }
-    std::string JPH_Vec3_to_string(JPH::Vec3 &v) {
-        std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str();
+    std::string JPH_Vec3_to_string(const JPH::Vec3 &v) {
+        std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str();
 
     }
-    JPH::Vec3 string_to_JPH_Vec3(std::string &s) {
+    JPH::Vec3 string_to_JPH_Vec3(const std::string &s) {
         std::regex r(R"(\s*\(?\s*([-+]?[0-9]*\.?[0-9]+)\s*,\s*([-+]?[0-9]*\.?[0-9]+)\s*,\s*([-+]?[0-9]*\.?[0-9]+)\s*\)?\s*)");   std::smatch m;   if (std::regex_match(s, m, r)) {     return JPH::Vec3(std::stof(m[1]), std::stof(m[2]), std::stof(m[3]));   }   throw std::invalid_argument("Invalid JPH::Vec3 string");
 
     }
-    std::vector<uint8_t> serialize_JPH_Vec3(JPH::Vec3 &v) {
+    std::vector<uint8_t> serialize_JPH_Vec3(const JPH::Vec3 &v) {
         std::vector<uint8_t> buf(sizeof(JPH::Vec3));   std::memcpy(buf.data(), &v, sizeof(JPH::Vec3));   return buf;
 
     }
-    size_t size_when_serialized_JPH_Vec3(JPH::Vec3 &v) {
+    size_t size_when_serialized_JPH_Vec3(const JPH::Vec3 &v) {
         return sizeof(JPH::Vec3);
 
     }
-    JPH::Vec3 deserialize_JPH_Vec3(std::vector<uint8_t> &buf) {
+    JPH::Vec3 deserialize_JPH_Vec3(const std::vector<uint8_t> &buf) {
         JPH::Vec3 v;   std::memcpy(&v, buf.data(), sizeof(JPH::Vec3));   return v;
 
     }
-    std::string JPH_Mat44_to_string(JPH::Mat44 &m) {
+    std::string JPH_Mat44_to_string(const JPH::Mat44 &m) {
         std::ostringstream oss;   for (int c = 0; c < 4; ++c) {     const JPH::Vec4 &col = m.GetColumn4(c);     oss << '[' << col.GetX() << ", " << col.GetY() << ", " << col.GetZ() << ", " << col.GetW() << ']';     if (c != 3) oss << '\n';   }   return oss.str();
 
     }
-    JPH::Mat44 string_to_JPH_Mat44(std::string &s) {
+    JPH::Mat44 string_to_JPH_Mat44(const std::string &s) {
         std::regex r(R"(([-+]?[0-9]*\.?[0-9]+))");   std::sregex_iterator it(s.begin(), s.end(), r), end;   std::vector<float> vals;   for (; it != end; ++it) vals.push_back(std::stof((*it)[1]));   if (vals.size() != 16)     throw std::invalid_argument("Invalid JPH::Mat44 string; expected 16 floats");   JPH::Mat44 m;   m.SetColumn4(0, JPH::Vec4(vals[0], vals[1], vals[2], vals[3]));   m.SetColumn4(1, JPH::Vec4(vals[4], vals[5], vals[6], vals[7]));   m.SetColumn4(2, JPH::Vec4(vals[8], vals[9], vals[10], vals[11]));   m.SetColumn4(3, JPH::Vec4(vals[12], vals[13], vals[14], vals[15]));   return m;
 
     }
-    std::vector<uint8_t> serialize_JPH_Mat44(JPH::Mat44 &m) {
+    std::vector<uint8_t> serialize_JPH_Mat44(const JPH::Mat44 &m) {
         std::vector<uint8_t> buf(sizeof(JPH::Mat44));   std::memcpy(buf.data(), &m, sizeof(JPH::Mat44));   return buf;
 
     }
-    size_t size_when_serialized_JPH_Mat44(JPH::Mat44 &m) {
+    size_t size_when_serialized_JPH_Mat44(const JPH::Mat44 &m) {
         return sizeof(JPH::Mat44);
 
     }
-    JPH::Mat44 deserialize_JPH_Mat44(std::vector<uint8_t> &buf) {
+    JPH::Mat44 deserialize_JPH_Mat44(const std::vector<uint8_t> &buf) {
         JPH::Mat44 m;   std::memcpy(&m, buf.data(), sizeof(JPH::Mat44));   return m;
 
     }
@@ -434,7 +434,7 @@ public:
             }
 
     }
-    PacketType string_to_PacketType(std::string &s) {
+    PacketType string_to_PacketType(const std::string &s) {
         if (s == "PacketType::CLIENT_UPDATE_DATA") return PacketType::CLIENT_UPDATE_DATA;
             if (s == "PacketType::GAME_STATE") return PacketType::GAME_STATE;
             if (s == "PacketType::NUM_ENUMERATORS") return PacketType::NUM_ENUMERATORS;
@@ -448,18 +448,18 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_PacketType(PacketType &obj) {
+    size_t size_when_serialized_PacketType(const PacketType &obj) {
         return sizeof(uint8_t);
 
     }
-    PacketType deserialize_PacketType(std::vector<uint8_t> &buffer) {
+    PacketType deserialize_PacketType(const std::vector<uint8_t> &buffer) {
         if (buffer.size() < sizeof(uint8_t)) return static_cast<PacketType>(0);
             uint8_t raw = 0;
             std::memcpy(&raw, buffer.data(), sizeof(uint8_t));
             return static_cast<PacketType>(raw);
 
     }
-    std::string PacketHeader_to_string(PacketHeader obj) {
+    std::string PacketHeader_to_string(const PacketHeader obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [=](PacketType value) -> std::string {
@@ -478,7 +478,7 @@ public:
             return oss.str();
 
     }
-    PacketHeader string_to_PacketHeader(std::string &s) {
+    PacketHeader string_to_PacketHeader(const std::string &s) {
         PacketHeader obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -507,7 +507,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_PacketHeader(PacketHeader obj) {
+    std::vector<uint8_t> serialize_PacketHeader(const PacketHeader obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [=](PacketType value) -> std::vector<uint8_t> {
             std::vector<uint8_t> buffer(sizeof(uint8_t));
@@ -523,7 +523,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_PacketHeader(PacketHeader obj) {
+    size_t size_when_serialized_PacketHeader(const PacketHeader obj) {
         size_t total = 0;
             { auto size_fn = [=](const PacketType &obj) -> size_t {
             return sizeof(uint8_t);
@@ -534,7 +534,7 @@ public:
             return total;
 
     }
-    PacketHeader deserialize_PacketHeader(std::vector<uint8_t> &buffer) {
+    PacketHeader deserialize_PacketHeader(const std::vector<uint8_t> &buffer) {
         PacketHeader obj;
             size_t offset = 0;
             { auto deser = [=](const std::vector<uint8_t> &buffer) -> PacketType {
@@ -563,7 +563,7 @@ public:
             return obj;
 
     }
-    std::string PacketWithSize_to_string(PacketWithSize obj) {
+    std::string PacketWithSize_to_string(const PacketWithSize obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [=](const std::vector<char>& vec) -> std::string {
@@ -588,7 +588,7 @@ public:
             return oss.str();
 
     }
-    PacketWithSize string_to_PacketWithSize(std::string &s) {
+    PacketWithSize string_to_PacketWithSize(const std::string &s) {
         PacketWithSize obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -632,7 +632,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_PacketWithSize(PacketWithSize obj) {
+    std::vector<uint8_t> serialize_PacketWithSize(const PacketWithSize obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [=](const std::vector<char>& vec) -> std::vector<uint8_t> {
             std::vector<uint8_t> buffer;
@@ -659,7 +659,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_PacketWithSize(PacketWithSize obj) {
+    size_t size_when_serialized_PacketWithSize(const PacketWithSize obj) {
         size_t total = 0;
             { auto size_fn = [=](const std::vector<char>& vec) -> size_t {
             size_t total_size = sizeof(size_t); // space for storing count
@@ -675,7 +675,7 @@ public:
             return total;
 
     }
-    PacketWithSize deserialize_PacketWithSize(std::vector<uint8_t> &buffer) {
+    PacketWithSize deserialize_PacketWithSize(const std::vector<uint8_t> &buffer) {
         PacketWithSize obj;
             size_t offset = 0;
             { auto deser = [=](const std::vector<uint8_t>& buffer) -> std::vector<char> {
@@ -732,7 +732,7 @@ public:
             }
 
     }
-    SoundType string_to_SoundType(std::string &s) {
+    SoundType string_to_SoundType(const std::string &s) {
         if (s == "SoundType::UI_HOVER") return SoundType::UI_HOVER;
             if (s == "SoundType::UI_CLICK") return SoundType::UI_CLICK;
             if (s == "SoundType::UI_SUCCESS") return SoundType::UI_SUCCESS;
@@ -750,18 +750,18 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_SoundType(SoundType &obj) {
+    size_t size_when_serialized_SoundType(const SoundType &obj) {
         return sizeof(int);
 
     }
-    SoundType deserialize_SoundType(std::vector<uint8_t> &buffer) {
+    SoundType deserialize_SoundType(const std::vector<uint8_t> &buffer) {
         if (buffer.size() < sizeof(int)) return static_cast<SoundType>(0);
             int raw = 0;
             std::memcpy(&raw, buffer.data(), sizeof(int));
             return static_cast<SoundType>(raw);
 
     }
-    std::string DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer_to_string(DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer obj) {
+    std::string DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer_to_string(const DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [](const unsigned int &v) { return std::to_string(v); };
@@ -776,7 +776,7 @@ public:
             return oss.str();
 
     }
-    DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer string_to_DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer(std::string &s) {
+    DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer string_to_DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer(const std::string &s) {
         DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -808,7 +808,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer(DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer obj) {
+    std::vector<uint8_t> serialize_DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer(const DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [](const unsigned int &v) {   std::vector<uint8_t> buf(sizeof(unsigned int));   std::memcpy(buf.data(), &v, sizeof(unsigned int));   return buf; };
               auto bytes = ser(obj.id_of_interpolation_start_game_state_id_for_non_local_character_state);
@@ -822,7 +822,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer(DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer obj) {
+    size_t size_when_serialized_DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer(const DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer obj) {
         size_t total = 0;
             { auto size_fn = [](const unsigned int &v) { return sizeof(unsigned int); };
               total += size_fn(obj.id_of_interpolation_start_game_state_id_for_non_local_character_state); }
@@ -833,7 +833,7 @@ public:
             return total;
 
     }
-    DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer deserialize_DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer(std::vector<uint8_t> &buffer) {
+    DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer deserialize_DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer(const std::vector<uint8_t> &buffer) {
         DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer obj;
             size_t offset = 0;
             { auto deser = [](const std::vector<uint8_t> &buf) {   unsigned int v;   std::memcpy(&v, buf.data(), sizeof(unsigned int));   return v; };
@@ -863,7 +863,7 @@ public:
             return obj;
 
     }
-    std::string DataToReconstructClientGameStateWhenFiringOnServer_to_string(DataToReconstructClientGameStateWhenFiringOnServer obj) {
+    std::string DataToReconstructClientGameStateWhenFiringOnServer_to_string(const DataToReconstructClientGameStateWhenFiringOnServer obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [=](const DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer& obj) -> std::string {
@@ -885,7 +885,7 @@ public:
             return oss.str();
 
     }
-    DataToReconstructClientGameStateWhenFiringOnServer string_to_DataToReconstructClientGameStateWhenFiringOnServer(std::string &s) {
+    DataToReconstructClientGameStateWhenFiringOnServer string_to_DataToReconstructClientGameStateWhenFiringOnServer(const std::string &s) {
         DataToReconstructClientGameStateWhenFiringOnServer obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -931,7 +931,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_DataToReconstructClientGameStateWhenFiringOnServer(DataToReconstructClientGameStateWhenFiringOnServer obj) {
+    std::vector<uint8_t> serialize_DataToReconstructClientGameStateWhenFiringOnServer(const DataToReconstructClientGameStateWhenFiringOnServer obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [=](const DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer& obj) -> std::vector<uint8_t> {
             std::vector<uint8_t> buffer;
@@ -951,7 +951,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_DataToReconstructClientGameStateWhenFiringOnServer(DataToReconstructClientGameStateWhenFiringOnServer obj) {
+    size_t size_when_serialized_DataToReconstructClientGameStateWhenFiringOnServer(const DataToReconstructClientGameStateWhenFiringOnServer obj) {
         size_t total = 0;
             { auto size_fn = [=](const DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer& obj) -> size_t {
             size_t total = 0;
@@ -967,7 +967,7 @@ public:
             return total;
 
     }
-    DataToReconstructClientGameStateWhenFiringOnServer deserialize_DataToReconstructClientGameStateWhenFiringOnServer(std::vector<uint8_t> &buffer) {
+    DataToReconstructClientGameStateWhenFiringOnServer deserialize_DataToReconstructClientGameStateWhenFiringOnServer(const std::vector<uint8_t> &buffer) {
         DataToReconstructClientGameStateWhenFiringOnServer obj;
             size_t offset = 0;
             { auto deser = [=](const std::vector<uint8_t> &buffer) -> DataToReconstructNonLocalCharacterPhysicsStateWithEntityInterpolationWhenFiringOnServer {
@@ -1018,7 +1018,7 @@ public:
             return obj;
 
     }
-    std::string ClientInputState_to_string(ClientInputState obj) {
+    std::string ClientInputState_to_string(const ClientInputState obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [](const bool &v) { return v ? "true" : "false"; };
@@ -1039,7 +1039,7 @@ public:
             return oss.str();
 
     }
-    ClientInputState string_to_ClientInputState(std::string &s) {
+    ClientInputState string_to_ClientInputState(const std::string &s) {
         ClientInputState obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -1087,7 +1087,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_ClientInputState(ClientInputState obj) {
+    std::vector<uint8_t> serialize_ClientInputState(const ClientInputState obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [](const bool &v) {   std::vector<uint8_t> buf(1);   buf[0] = v ? 1 : 0;   return buf; };
               auto bytes = ser(obj.forward_pressed);
@@ -1107,7 +1107,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_ClientInputState(ClientInputState obj) {
+    size_t size_when_serialized_ClientInputState(const ClientInputState obj) {
         size_t total = 0;
             { auto size_fn = [](const bool &v) { return sizeof(uint8_t); };
               total += size_fn(obj.forward_pressed); }
@@ -1122,7 +1122,7 @@ public:
             return total;
 
     }
-    ClientInputState deserialize_ClientInputState(std::vector<uint8_t> &buffer) {
+    ClientInputState deserialize_ClientInputState(const std::vector<uint8_t> &buffer) {
         ClientInputState obj;
             size_t offset = 0;
             { auto deser = [](const std::vector<uint8_t> &buf) {   return buf[0] != 0; };
@@ -1168,19 +1168,19 @@ public:
             return obj;
 
     }
-    std::string CharacterPhysicsState_to_string(CharacterPhysicsState obj) {
+    std::string CharacterPhysicsState_to_string(const CharacterPhysicsState obj) {
         std::ostringstream oss;
             oss << "{";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "position=" << conv(obj.position); }
             oss << ", ";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "velocity=" << conv(obj.velocity); }
             oss << "}";
             return oss.str();
 
     }
-    CharacterPhysicsState string_to_CharacterPhysicsState(std::string &s) {
+    CharacterPhysicsState string_to_CharacterPhysicsState(const std::string &s) {
         CharacterPhysicsState obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -1204,7 +1204,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_CharacterPhysicsState(CharacterPhysicsState obj) {
+    std::vector<uint8_t> serialize_CharacterPhysicsState(const CharacterPhysicsState obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [](const JPH::Vec3 &v) {   std::vector<uint8_t> buf(sizeof(JPH::Vec3));   std::memcpy(buf.data(), &v, sizeof(JPH::Vec3));   return buf; };
               auto bytes = ser(obj.position);
@@ -1215,7 +1215,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_CharacterPhysicsState(CharacterPhysicsState obj) {
+    size_t size_when_serialized_CharacterPhysicsState(const CharacterPhysicsState obj) {
         size_t total = 0;
             { auto size_fn = [](const JPH::Vec3 &v) { return sizeof(JPH::Vec3); };
               total += size_fn(obj.position); }
@@ -1224,7 +1224,7 @@ public:
             return total;
 
     }
-    CharacterPhysicsState deserialize_CharacterPhysicsState(std::vector<uint8_t> &buffer) {
+    CharacterPhysicsState deserialize_CharacterPhysicsState(const std::vector<uint8_t> &buffer) {
         CharacterPhysicsState obj;
             size_t offset = 0;
             { auto deser = [](const std::vector<uint8_t> &buf) {   JPH::Vec3 v;   std::memcpy(&v, buf.data(), sizeof(JPH::Vec3));   return v; };
@@ -1246,7 +1246,7 @@ public:
             return obj;
 
     }
-    std::string IdTaggedCharacterPhysicsState_to_string(IdTaggedCharacterPhysicsState obj) {
+    std::string IdTaggedCharacterPhysicsState_to_string(const IdTaggedCharacterPhysicsState obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [](const unsigned int &v) { return std::to_string(v); };
@@ -1255,10 +1255,10 @@ public:
             { auto conv = [=](const CharacterPhysicsState& obj) -> std::string {
             std::ostringstream oss;
             oss << "{";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "position=" << conv(obj.position); }
             oss << ", ";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "velocity=" << conv(obj.velocity); }
             oss << "}";
             return oss.str();
@@ -1268,7 +1268,7 @@ public:
             return oss.str();
 
     }
-    IdTaggedCharacterPhysicsState string_to_IdTaggedCharacterPhysicsState(std::string &s) {
+    IdTaggedCharacterPhysicsState string_to_IdTaggedCharacterPhysicsState(const std::string &s) {
         IdTaggedCharacterPhysicsState obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -1314,7 +1314,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_IdTaggedCharacterPhysicsState(IdTaggedCharacterPhysicsState obj) {
+    std::vector<uint8_t> serialize_IdTaggedCharacterPhysicsState(const IdTaggedCharacterPhysicsState obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [](const unsigned int &v) {   std::vector<uint8_t> buf(sizeof(unsigned int));   std::memcpy(buf.data(), &v, sizeof(unsigned int));   return buf; };
               auto bytes = ser(obj.id_of_last_update_data_used_to_produce_this_state);
@@ -1334,7 +1334,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_IdTaggedCharacterPhysicsState(IdTaggedCharacterPhysicsState obj) {
+    size_t size_when_serialized_IdTaggedCharacterPhysicsState(const IdTaggedCharacterPhysicsState obj) {
         size_t total = 0;
             { auto size_fn = [](const unsigned int &v) { return sizeof(unsigned int); };
               total += size_fn(obj.id_of_last_update_data_used_to_produce_this_state); }
@@ -1350,7 +1350,7 @@ public:
             return total;
 
     }
-    IdTaggedCharacterPhysicsState deserialize_IdTaggedCharacterPhysicsState(std::vector<uint8_t> &buffer) {
+    IdTaggedCharacterPhysicsState deserialize_IdTaggedCharacterPhysicsState(const std::vector<uint8_t> &buffer) {
         IdTaggedCharacterPhysicsState obj;
             size_t offset = 0;
             { auto deser = [](const std::vector<uint8_t> &buf) {   unsigned int v;   std::memcpy(&v, buf.data(), sizeof(unsigned int));   return v; };
@@ -1399,7 +1399,7 @@ public:
             return obj;
 
     }
-    std::string CharacterPhysicsUpdateData_to_string(CharacterPhysicsUpdateData obj) {
+    std::string CharacterPhysicsUpdateData_to_string(const CharacterPhysicsUpdateData obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [](const double &v) {  std::ostringstream oss;  oss << std::setprecision(std::numeric_limits<double>::max_digits10) << v;  return oss.str();};
@@ -1427,13 +1427,13 @@ public:
         };
               oss << "client_input_state=" << conv(obj.client_input_state); }
             oss << ", ";
-            { auto conv = [](const glm::vec3 &v) {   std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str(); };
+            { auto conv = [](const glm::vec3 &v) {  int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();};
               oss << "xy_forward_vector_camera=" << conv(obj.xy_forward_vector_camera); }
             oss << "}";
             return oss.str();
 
     }
-    CharacterPhysicsUpdateData string_to_CharacterPhysicsUpdateData(std::string &s) {
+    CharacterPhysicsUpdateData string_to_CharacterPhysicsUpdateData(const std::string &s) {
         CharacterPhysicsUpdateData obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -1511,7 +1511,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_CharacterPhysicsUpdateData(CharacterPhysicsUpdateData obj) {
+    std::vector<uint8_t> serialize_CharacterPhysicsUpdateData(const CharacterPhysicsUpdateData obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [](const double &v) {   std::vector<uint8_t> buf(sizeof(double));   std::memcpy(buf.data(), &v, sizeof(double));   return buf; };
               auto bytes = ser(obj.dt);
@@ -1543,7 +1543,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_CharacterPhysicsUpdateData(CharacterPhysicsUpdateData obj) {
+    size_t size_when_serialized_CharacterPhysicsUpdateData(const CharacterPhysicsUpdateData obj) {
         size_t total = 0;
             { auto size_fn = [](const double &v) { return sizeof(double); };
               total += size_fn(obj.dt); }
@@ -1567,7 +1567,7 @@ public:
             return total;
 
     }
-    CharacterPhysicsUpdateData deserialize_CharacterPhysicsUpdateData(std::vector<uint8_t> &buffer) {
+    CharacterPhysicsUpdateData deserialize_CharacterPhysicsUpdateData(const std::vector<uint8_t> &buffer) {
         CharacterPhysicsUpdateData obj;
             size_t offset = 0;
             { auto deser = [](const std::vector<uint8_t> &buf) {   double v;   std::memcpy(&v, buf.data(), sizeof(double));   return v; };
@@ -1654,7 +1654,7 @@ public:
             return obj;
 
     }
-    std::string IdTaggedCharacterPhysicsUpdateData_to_string(IdTaggedCharacterPhysicsUpdateData obj) {
+    std::string IdTaggedCharacterPhysicsUpdateData_to_string(const IdTaggedCharacterPhysicsUpdateData obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [](const unsigned int &v) { return std::to_string(v); };
@@ -1688,7 +1688,7 @@ public:
         };
               oss << "client_input_state=" << conv(obj.client_input_state); }
             oss << ", ";
-            { auto conv = [](const glm::vec3 &v) {   std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str(); };
+            { auto conv = [](const glm::vec3 &v) {  int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();};
               oss << "xy_forward_vector_camera=" << conv(obj.xy_forward_vector_camera); }
             oss << "}";
             return oss.str();
@@ -1698,7 +1698,7 @@ public:
             return oss.str();
 
     }
-    IdTaggedCharacterPhysicsUpdateData string_to_IdTaggedCharacterPhysicsUpdateData(std::string &s) {
+    IdTaggedCharacterPhysicsUpdateData string_to_IdTaggedCharacterPhysicsUpdateData(const std::string &s) {
         IdTaggedCharacterPhysicsUpdateData obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -1798,7 +1798,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_IdTaggedCharacterPhysicsUpdateData(IdTaggedCharacterPhysicsUpdateData obj) {
+    std::vector<uint8_t> serialize_IdTaggedCharacterPhysicsUpdateData(const IdTaggedCharacterPhysicsUpdateData obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [](const unsigned int &v) {   std::vector<uint8_t> buf(sizeof(unsigned int));   std::memcpy(buf.data(), &v, sizeof(unsigned int));   return buf; };
               auto bytes = ser(obj.id);
@@ -1839,7 +1839,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_IdTaggedCharacterPhysicsUpdateData(IdTaggedCharacterPhysicsUpdateData obj) {
+    size_t size_when_serialized_IdTaggedCharacterPhysicsUpdateData(const IdTaggedCharacterPhysicsUpdateData obj) {
         size_t total = 0;
             { auto size_fn = [](const unsigned int &v) { return sizeof(unsigned int); };
               total += size_fn(obj.id); }
@@ -1870,7 +1870,7 @@ public:
             return total;
 
     }
-    IdTaggedCharacterPhysicsUpdateData deserialize_IdTaggedCharacterPhysicsUpdateData(std::vector<uint8_t> &buffer) {
+    IdTaggedCharacterPhysicsUpdateData deserialize_IdTaggedCharacterPhysicsUpdateData(const std::vector<uint8_t> &buffer) {
         IdTaggedCharacterPhysicsUpdateData obj;
             size_t offset = 0;
             { auto deser = [](const std::vector<uint8_t> &buf) {   unsigned int v;   std::memcpy(&v, buf.data(), sizeof(unsigned int));   return v; };
@@ -1999,7 +1999,7 @@ public:
             return obj;
 
     }
-    std::string CharacterCameraState_to_string(CharacterCameraState obj) {
+    std::string CharacterCameraState_to_string(const CharacterCameraState obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [](const double &v) {  std::ostringstream oss;  oss << std::setprecision(std::numeric_limits<double>::max_digits10) << v;  return oss.str();};
@@ -2017,7 +2017,7 @@ public:
             return oss.str();
 
     }
-    CharacterCameraState string_to_CharacterCameraState(std::string &s) {
+    CharacterCameraState string_to_CharacterCameraState(const std::string &s) {
         CharacterCameraState obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -2057,7 +2057,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_CharacterCameraState(CharacterCameraState obj) {
+    std::vector<uint8_t> serialize_CharacterCameraState(const CharacterCameraState obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [](const double &v) {   std::vector<uint8_t> buf(sizeof(double));   std::memcpy(buf.data(), &v, sizeof(double));   return buf; };
               auto bytes = ser(obj.yaw);
@@ -2074,7 +2074,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_CharacterCameraState(CharacterCameraState obj) {
+    size_t size_when_serialized_CharacterCameraState(const CharacterCameraState obj) {
         size_t total = 0;
             { auto size_fn = [](const double &v) { return sizeof(double); };
               total += size_fn(obj.yaw); }
@@ -2087,7 +2087,7 @@ public:
             return total;
 
     }
-    CharacterCameraState deserialize_CharacterCameraState(std::vector<uint8_t> &buffer) {
+    CharacterCameraState deserialize_CharacterCameraState(const std::vector<uint8_t> &buffer) {
         CharacterCameraState obj;
             size_t offset = 0;
             { auto deser = [](const std::vector<uint8_t> &buf) {   double v;   std::memcpy(&v, buf.data(), sizeof(double));   return v; };
@@ -2125,7 +2125,7 @@ public:
             return obj;
 
     }
-    std::string IdTaggedCharacterCameraState_to_string(IdTaggedCharacterCameraState obj) {
+    std::string IdTaggedCharacterCameraState_to_string(const IdTaggedCharacterCameraState obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [](const unsigned int &v) { return std::to_string(v); };
@@ -2153,7 +2153,7 @@ public:
             return oss.str();
 
     }
-    IdTaggedCharacterCameraState string_to_IdTaggedCharacterCameraState(std::string &s) {
+    IdTaggedCharacterCameraState string_to_IdTaggedCharacterCameraState(const std::string &s) {
         IdTaggedCharacterCameraState obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -2215,7 +2215,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_IdTaggedCharacterCameraState(IdTaggedCharacterCameraState obj) {
+    std::vector<uint8_t> serialize_IdTaggedCharacterCameraState(const IdTaggedCharacterCameraState obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [](const unsigned int &v) {   std::vector<uint8_t> buf(sizeof(unsigned int));   std::memcpy(buf.data(), &v, sizeof(unsigned int));   return buf; };
               auto bytes = ser(obj.id_of_last_update_data_used_to_produce_this_state);
@@ -2241,7 +2241,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_IdTaggedCharacterCameraState(IdTaggedCharacterCameraState obj) {
+    size_t size_when_serialized_IdTaggedCharacterCameraState(const IdTaggedCharacterCameraState obj) {
         size_t total = 0;
             { auto size_fn = [](const unsigned int &v) { return sizeof(unsigned int); };
               total += size_fn(obj.id_of_last_update_data_used_to_produce_this_state); }
@@ -2261,7 +2261,7 @@ public:
             return total;
 
     }
-    IdTaggedCharacterCameraState deserialize_IdTaggedCharacterCameraState(std::vector<uint8_t> &buffer) {
+    IdTaggedCharacterCameraState deserialize_IdTaggedCharacterCameraState(const std::vector<uint8_t> &buffer) {
         IdTaggedCharacterCameraState obj;
             size_t offset = 0;
             { auto deser = [](const std::vector<uint8_t> &buf) {   unsigned int v;   std::memcpy(&v, buf.data(), sizeof(unsigned int));   return v; };
@@ -2330,7 +2330,7 @@ public:
             return obj;
 
     }
-    std::string CharacterCameraUpdateData_to_string(CharacterCameraUpdateData obj) {
+    std::string CharacterCameraUpdateData_to_string(const CharacterCameraUpdateData obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [](const double &v) {  std::ostringstream oss;  oss << std::setprecision(std::numeric_limits<double>::max_digits10) << v;  return oss.str();};
@@ -2345,7 +2345,7 @@ public:
             return oss.str();
 
     }
-    CharacterCameraUpdateData string_to_CharacterCameraUpdateData(std::string &s) {
+    CharacterCameraUpdateData string_to_CharacterCameraUpdateData(const std::string &s) {
         CharacterCameraUpdateData obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -2377,7 +2377,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_CharacterCameraUpdateData(CharacterCameraUpdateData obj) {
+    std::vector<uint8_t> serialize_CharacterCameraUpdateData(const CharacterCameraUpdateData obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [](const double &v) {   std::vector<uint8_t> buf(sizeof(double));   std::memcpy(buf.data(), &v, sizeof(double));   return buf; };
               auto bytes = ser(obj.mouse_position_x);
@@ -2391,7 +2391,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_CharacterCameraUpdateData(CharacterCameraUpdateData obj) {
+    size_t size_when_serialized_CharacterCameraUpdateData(const CharacterCameraUpdateData obj) {
         size_t total = 0;
             { auto size_fn = [](const double &v) { return sizeof(double); };
               total += size_fn(obj.mouse_position_x); }
@@ -2402,7 +2402,7 @@ public:
             return total;
 
     }
-    CharacterCameraUpdateData deserialize_CharacterCameraUpdateData(std::vector<uint8_t> &buffer) {
+    CharacterCameraUpdateData deserialize_CharacterCameraUpdateData(const std::vector<uint8_t> &buffer) {
         CharacterCameraUpdateData obj;
             size_t offset = 0;
             { auto deser = [](const std::vector<uint8_t> &buf) {   double v;   std::memcpy(&v, buf.data(), sizeof(double));   return v; };
@@ -2432,7 +2432,7 @@ public:
             return obj;
 
     }
-    std::string CharacterFiringUpdateData_to_string(CharacterFiringUpdateData obj) {
+    std::string CharacterFiringUpdateData_to_string(const CharacterFiringUpdateData obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [](const bool &v) { return v ? "true" : "false"; };
@@ -2464,7 +2464,7 @@ public:
             return oss.str();
 
     }
-    CharacterFiringUpdateData string_to_CharacterFiringUpdateData(std::string &s) {
+    CharacterFiringUpdateData string_to_CharacterFiringUpdateData(const std::string &s) {
         CharacterFiringUpdateData obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -2544,7 +2544,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_CharacterFiringUpdateData(CharacterFiringUpdateData obj) {
+    std::vector<uint8_t> serialize_CharacterFiringUpdateData(const CharacterFiringUpdateData obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [](const bool &v) {   std::vector<uint8_t> buf(1);   buf[0] = v ? 1 : 0;   return buf; };
               auto bytes = ser(obj.fire_pressed);
@@ -2585,7 +2585,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_CharacterFiringUpdateData(CharacterFiringUpdateData obj) {
+    size_t size_when_serialized_CharacterFiringUpdateData(const CharacterFiringUpdateData obj) {
         size_t total = 0;
             { auto size_fn = [](const bool &v) { return sizeof(uint8_t); };
               total += size_fn(obj.fire_pressed); }
@@ -2616,7 +2616,7 @@ public:
             return total;
 
     }
-    CharacterFiringUpdateData deserialize_CharacterFiringUpdateData(std::vector<uint8_t> &buffer) {
+    CharacterFiringUpdateData deserialize_CharacterFiringUpdateData(const std::vector<uint8_t> &buffer) {
         CharacterFiringUpdateData obj;
             size_t offset = 0;
             { auto deser = [](const std::vector<uint8_t> &buf) {   return buf[0] != 0; };
@@ -2679,7 +2679,7 @@ public:
             return obj;
 
     }
-    std::string IdTaggedCharacterCameraUpdateData_to_string(IdTaggedCharacterCameraUpdateData obj) {
+    std::string IdTaggedCharacterCameraUpdateData_to_string(const IdTaggedCharacterCameraUpdateData obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [](const unsigned int &v) { return std::to_string(v); };
@@ -2704,7 +2704,7 @@ public:
             return oss.str();
 
     }
-    IdTaggedCharacterCameraUpdateData string_to_IdTaggedCharacterCameraUpdateData(std::string &s) {
+    IdTaggedCharacterCameraUpdateData string_to_IdTaggedCharacterCameraUpdateData(const std::string &s) {
         IdTaggedCharacterCameraUpdateData obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -2758,7 +2758,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_IdTaggedCharacterCameraUpdateData(IdTaggedCharacterCameraUpdateData obj) {
+    std::vector<uint8_t> serialize_IdTaggedCharacterCameraUpdateData(const IdTaggedCharacterCameraUpdateData obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [](const unsigned int &v) {   std::vector<uint8_t> buf(sizeof(unsigned int));   std::memcpy(buf.data(), &v, sizeof(unsigned int));   return buf; };
               auto bytes = ser(obj.id);
@@ -2781,7 +2781,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_IdTaggedCharacterCameraUpdateData(IdTaggedCharacterCameraUpdateData obj) {
+    size_t size_when_serialized_IdTaggedCharacterCameraUpdateData(const IdTaggedCharacterCameraUpdateData obj) {
         size_t total = 0;
             { auto size_fn = [](const unsigned int &v) { return sizeof(unsigned int); };
               total += size_fn(obj.id); }
@@ -2799,7 +2799,7 @@ public:
             return total;
 
     }
-    IdTaggedCharacterCameraUpdateData deserialize_IdTaggedCharacterCameraUpdateData(std::vector<uint8_t> &buffer) {
+    IdTaggedCharacterCameraUpdateData deserialize_IdTaggedCharacterCameraUpdateData(const std::vector<uint8_t> &buffer) {
         IdTaggedCharacterCameraUpdateData obj;
             size_t offset = 0;
             { auto deser = [](const std::vector<uint8_t> &buf) {   unsigned int v;   std::memcpy(&v, buf.data(), sizeof(unsigned int));   return v; };
@@ -2858,7 +2858,7 @@ public:
             return obj;
 
     }
-    std::string CharacterUpdateData_to_string(CharacterUpdateData obj) {
+    std::string CharacterUpdateData_to_string(const CharacterUpdateData obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [=](const CharacterPhysicsUpdateData& obj) -> std::string {
@@ -2889,7 +2889,7 @@ public:
         };
               oss << "client_input_state=" << conv(obj.client_input_state); }
             oss << ", ";
-            { auto conv = [](const glm::vec3 &v) {   std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str(); };
+            { auto conv = [](const glm::vec3 &v) {  int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();};
               oss << "xy_forward_vector_camera=" << conv(obj.xy_forward_vector_camera); }
             oss << "}";
             return oss.str();
@@ -2948,7 +2948,7 @@ public:
             return oss.str();
 
     }
-    CharacterUpdateData string_to_CharacterUpdateData(std::string &s) {
+    CharacterUpdateData string_to_CharacterUpdateData(const std::string &s) {
         CharacterUpdateData obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -3164,7 +3164,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_CharacterUpdateData(CharacterUpdateData obj) {
+    std::vector<uint8_t> serialize_CharacterUpdateData(const CharacterUpdateData obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [=](const CharacterPhysicsUpdateData& obj) -> std::vector<uint8_t> {
             std::vector<uint8_t> buffer;
@@ -3262,7 +3262,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_CharacterUpdateData(CharacterUpdateData obj) {
+    size_t size_when_serialized_CharacterUpdateData(const CharacterUpdateData obj) {
         size_t total = 0;
             { auto size_fn = [=](const CharacterPhysicsUpdateData& obj) -> size_t {
             size_t total = 0;
@@ -3334,7 +3334,7 @@ public:
             return total;
 
     }
-    CharacterUpdateData deserialize_CharacterUpdateData(std::vector<uint8_t> &buffer) {
+    CharacterUpdateData deserialize_CharacterUpdateData(const std::vector<uint8_t> &buffer) {
         CharacterUpdateData obj;
             size_t offset = 0;
             { auto deser = [=](const std::vector<uint8_t> &buffer) -> CharacterPhysicsUpdateData {
@@ -3571,7 +3571,7 @@ public:
             return obj;
 
     }
-    std::string IdTaggedCharacterUpdateData_to_string(IdTaggedCharacterUpdateData obj) {
+    std::string IdTaggedCharacterUpdateData_to_string(const IdTaggedCharacterUpdateData obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [](const unsigned int &v) { return std::to_string(v); };
@@ -3608,7 +3608,7 @@ public:
         };
               oss << "client_input_state=" << conv(obj.client_input_state); }
             oss << ", ";
-            { auto conv = [](const glm::vec3 &v) {   std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str(); };
+            { auto conv = [](const glm::vec3 &v) {  int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();};
               oss << "xy_forward_vector_camera=" << conv(obj.xy_forward_vector_camera); }
             oss << "}";
             return oss.str();
@@ -3671,7 +3671,7 @@ public:
             return oss.str();
 
     }
-    IdTaggedCharacterUpdateData string_to_IdTaggedCharacterUpdateData(std::string &s) {
+    IdTaggedCharacterUpdateData string_to_IdTaggedCharacterUpdateData(const std::string &s) {
         IdTaggedCharacterUpdateData obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -3909,7 +3909,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_IdTaggedCharacterUpdateData(IdTaggedCharacterUpdateData obj) {
+    std::vector<uint8_t> serialize_IdTaggedCharacterUpdateData(const IdTaggedCharacterUpdateData obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [](const unsigned int &v) {   std::vector<uint8_t> buf(sizeof(unsigned int));   std::memcpy(buf.data(), &v, sizeof(unsigned int));   return buf; };
               auto bytes = ser(obj.id);
@@ -4019,7 +4019,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_IdTaggedCharacterUpdateData(IdTaggedCharacterUpdateData obj) {
+    size_t size_when_serialized_IdTaggedCharacterUpdateData(const IdTaggedCharacterUpdateData obj) {
         size_t total = 0;
             { auto size_fn = [](const unsigned int &v) { return sizeof(unsigned int); };
               total += size_fn(obj.id); }
@@ -4099,7 +4099,7 @@ public:
             return total;
 
     }
-    IdTaggedCharacterUpdateData deserialize_IdTaggedCharacterUpdateData(std::vector<uint8_t> &buffer) {
+    IdTaggedCharacterUpdateData deserialize_IdTaggedCharacterUpdateData(const std::vector<uint8_t> &buffer) {
         IdTaggedCharacterUpdateData obj;
             size_t offset = 0;
             { auto deser = [](const std::vector<uint8_t> &buf) {   unsigned int v;   std::memcpy(&v, buf.data(), sizeof(unsigned int));   return v; };
@@ -4358,7 +4358,7 @@ public:
             return obj;
 
     }
-    std::string CharacterUpdateDataTimeBundle_to_string(CharacterUpdateDataTimeBundle obj) {
+    std::string CharacterUpdateDataTimeBundle_to_string(const CharacterUpdateDataTimeBundle obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [=](const std::vector<IdTaggedCharacterUpdateData>& vec) -> std::string {
@@ -4401,7 +4401,7 @@ public:
         };
               oss << "client_input_state=" << conv(obj.client_input_state); }
             oss << ", ";
-            { auto conv = [](const glm::vec3 &v) {   std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str(); };
+            { auto conv = [](const glm::vec3 &v) {  int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();};
               oss << "xy_forward_vector_camera=" << conv(obj.xy_forward_vector_camera); }
             oss << "}";
             return oss.str();
@@ -4478,7 +4478,7 @@ public:
             return oss.str();
 
     }
-    CharacterUpdateDataTimeBundle string_to_CharacterUpdateDataTimeBundle(std::string &s) {
+    CharacterUpdateDataTimeBundle string_to_CharacterUpdateDataTimeBundle(const std::string &s) {
         CharacterUpdateDataTimeBundle obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -4750,7 +4750,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_CharacterUpdateDataTimeBundle(CharacterUpdateDataTimeBundle obj) {
+    std::vector<uint8_t> serialize_CharacterUpdateDataTimeBundle(const CharacterUpdateDataTimeBundle obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [=](const std::vector<IdTaggedCharacterUpdateData>& vec) -> std::vector<uint8_t> {
             std::vector<uint8_t> buffer;
@@ -4888,7 +4888,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_CharacterUpdateDataTimeBundle(CharacterUpdateDataTimeBundle obj) {
+    size_t size_when_serialized_CharacterUpdateDataTimeBundle(const CharacterUpdateDataTimeBundle obj) {
         size_t total = 0;
             { auto size_fn = [=](const std::vector<IdTaggedCharacterUpdateData>& vec) -> size_t {
             size_t total_size = sizeof(size_t); // space for storing count
@@ -4982,7 +4982,7 @@ public:
             return total;
 
     }
-    CharacterUpdateDataTimeBundle deserialize_CharacterUpdateDataTimeBundle(std::vector<uint8_t> &buffer) {
+    CharacterUpdateDataTimeBundle deserialize_CharacterUpdateDataTimeBundle(const std::vector<uint8_t> &buffer) {
         CharacterUpdateDataTimeBundle obj;
             size_t offset = 0;
             { auto deser = [=](const std::vector<uint8_t>& buffer) -> std::vector<IdTaggedCharacterUpdateData> {
@@ -5276,7 +5276,7 @@ public:
             return obj;
 
     }
-    std::string SuccessfullyConnected_to_string(SuccessfullyConnected obj) {
+    std::string SuccessfullyConnected_to_string(const SuccessfullyConnected obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [](const unsigned int &v) { return std::to_string(v); };
@@ -5285,7 +5285,7 @@ public:
             return oss.str();
 
     }
-    SuccessfullyConnected string_to_SuccessfullyConnected(std::string &s) {
+    SuccessfullyConnected string_to_SuccessfullyConnected(const std::string &s) {
         SuccessfullyConnected obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -5301,7 +5301,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_SuccessfullyConnected(SuccessfullyConnected obj) {
+    std::vector<uint8_t> serialize_SuccessfullyConnected(const SuccessfullyConnected obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [](const unsigned int &v) {   std::vector<uint8_t> buf(sizeof(unsigned int));   std::memcpy(buf.data(), &v, sizeof(unsigned int));   return buf; };
               auto bytes = ser(obj.client_id);
@@ -5309,14 +5309,14 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_SuccessfullyConnected(SuccessfullyConnected obj) {
+    size_t size_when_serialized_SuccessfullyConnected(const SuccessfullyConnected obj) {
         size_t total = 0;
             { auto size_fn = [](const unsigned int &v) { return sizeof(unsigned int); };
               total += size_fn(obj.client_id); }
             return total;
 
     }
-    SuccessfullyConnected deserialize_SuccessfullyConnected(std::vector<uint8_t> &buffer) {
+    SuccessfullyConnected deserialize_SuccessfullyConnected(const std::vector<uint8_t> &buffer) {
         SuccessfullyConnected obj;
             size_t offset = 0;
             { auto deser = [](const std::vector<uint8_t> &buf) {   unsigned int v;   std::memcpy(&v, buf.data(), sizeof(unsigned int));   return v; };
@@ -5330,7 +5330,7 @@ public:
             return obj;
 
     }
-    std::string SuccessfullyConnectedPacket_to_string(SuccessfullyConnectedPacket obj) {
+    std::string SuccessfullyConnectedPacket_to_string(const SuccessfullyConnectedPacket obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [=](const PacketHeader& obj) -> std::string {
@@ -5366,7 +5366,7 @@ public:
             return oss.str();
 
     }
-    SuccessfullyConnectedPacket string_to_SuccessfullyConnectedPacket(std::string &s) {
+    SuccessfullyConnectedPacket string_to_SuccessfullyConnectedPacket(const std::string &s) {
         SuccessfullyConnectedPacket obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -5431,7 +5431,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_SuccessfullyConnectedPacket(SuccessfullyConnectedPacket obj) {
+    std::vector<uint8_t> serialize_SuccessfullyConnectedPacket(const SuccessfullyConnectedPacket obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [=](const PacketHeader& obj) -> std::vector<uint8_t> {
             std::vector<uint8_t> buffer;
@@ -5462,7 +5462,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_SuccessfullyConnectedPacket(SuccessfullyConnectedPacket obj) {
+    size_t size_when_serialized_SuccessfullyConnectedPacket(const SuccessfullyConnectedPacket obj) {
         size_t total = 0;
             { auto size_fn = [=](const PacketHeader& obj) -> size_t {
             size_t total = 0;
@@ -5485,7 +5485,7 @@ public:
             return total;
 
     }
-    SuccessfullyConnectedPacket deserialize_SuccessfullyConnectedPacket(std::vector<uint8_t> &buffer) {
+    SuccessfullyConnectedPacket deserialize_SuccessfullyConnectedPacket(const std::vector<uint8_t> &buffer) {
         SuccessfullyConnectedPacket obj;
             size_t offset = 0;
             { auto deser = [=](const std::vector<uint8_t> &buffer) -> PacketHeader {
@@ -5560,7 +5560,7 @@ public:
             return obj;
 
     }
-    std::string ClientUpdateData_to_string(ClientUpdateData obj) {
+    std::string ClientUpdateData_to_string(const ClientUpdateData obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [](const unsigned int &v) { return std::to_string(v); };
@@ -5612,7 +5612,7 @@ public:
         };
               oss << "client_input_state=" << conv(obj.client_input_state); }
             oss << ", ";
-            { auto conv = [](const glm::vec3 &v) {   std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str(); };
+            { auto conv = [](const glm::vec3 &v) {  int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();};
               oss << "xy_forward_vector_camera=" << conv(obj.xy_forward_vector_camera); }
             oss << "}";
             return oss.str();
@@ -5703,7 +5703,7 @@ public:
             return oss.str();
 
     }
-    ClientUpdateData string_to_ClientUpdateData(std::string &s) {
+    ClientUpdateData string_to_ClientUpdateData(const std::string &s) {
         ClientUpdateData obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -6017,7 +6017,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_ClientUpdateData(ClientUpdateData obj) {
+    std::vector<uint8_t> serialize_ClientUpdateData(const ClientUpdateData obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [](const unsigned int &v) {   std::vector<uint8_t> buf(sizeof(unsigned int));   std::memcpy(buf.data(), &v, sizeof(unsigned int));   return buf; };
               auto bytes = ser(obj.id);
@@ -6186,7 +6186,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_ClientUpdateData(ClientUpdateData obj) {
+    size_t size_when_serialized_ClientUpdateData(const ClientUpdateData obj) {
         size_t total = 0;
             { auto size_fn = [](const unsigned int &v) { return sizeof(unsigned int); };
               total += size_fn(obj.id); }
@@ -6296,7 +6296,7 @@ public:
             return total;
 
     }
-    ClientUpdateData deserialize_ClientUpdateData(std::vector<uint8_t> &buffer) {
+    ClientUpdateData deserialize_ClientUpdateData(const std::vector<uint8_t> &buffer) {
         ClientUpdateData obj;
             size_t offset = 0;
             { auto deser = [](const std::vector<uint8_t> &buf) {   unsigned int v;   std::memcpy(&v, buf.data(), sizeof(unsigned int));   return v; };
@@ -6633,7 +6633,7 @@ public:
             return obj;
 
     }
-    std::string ClientUpdateDataPacket_to_string(ClientUpdateDataPacket obj) {
+    std::string ClientUpdateDataPacket_to_string(const ClientUpdateDataPacket obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [=](const PacketHeader& obj) -> std::string {
@@ -6708,7 +6708,7 @@ public:
         };
               oss << "client_input_state=" << conv(obj.client_input_state); }
             oss << ", ";
-            { auto conv = [](const glm::vec3 &v) {   std::ostringstream oss;   oss << '(' << v.x << ", " << v.y << ", " << v.z << ')';   return oss.str(); };
+            { auto conv = [](const glm::vec3 &v) {  int precision =  std::numeric_limits<float>::max_digits10; std::ostringstream oss; oss << std::fixed << std::setprecision(precision); oss << '(' << v.x << ',' << ' ' << v.y << ',' << ' ' << v.z <<  ')'; return oss.str();};
               oss << "xy_forward_vector_camera=" << conv(obj.xy_forward_vector_camera); }
             oss << "}";
             return oss.str();
@@ -6803,7 +6803,7 @@ public:
             return oss.str();
 
     }
-    ClientUpdateDataPacket string_to_ClientUpdateDataPacket(std::string &s) {
+    ClientUpdateDataPacket string_to_ClientUpdateDataPacket(const std::string &s) {
         ClientUpdateDataPacket obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -7166,7 +7166,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_ClientUpdateDataPacket(ClientUpdateDataPacket obj) {
+    std::vector<uint8_t> serialize_ClientUpdateDataPacket(const ClientUpdateDataPacket obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [=](const PacketHeader& obj) -> std::vector<uint8_t> {
             std::vector<uint8_t> buffer;
@@ -7361,7 +7361,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_ClientUpdateDataPacket(ClientUpdateDataPacket obj) {
+    size_t size_when_serialized_ClientUpdateDataPacket(const ClientUpdateDataPacket obj) {
         size_t total = 0;
             { auto size_fn = [=](const PacketHeader& obj) -> size_t {
             size_t total = 0;
@@ -7488,7 +7488,7 @@ public:
             return total;
 
     }
-    ClientUpdateDataPacket deserialize_ClientUpdateDataPacket(std::vector<uint8_t> &buffer) {
+    ClientUpdateDataPacket deserialize_ClientUpdateDataPacket(const std::vector<uint8_t> &buffer) {
         ClientUpdateDataPacket obj;
             size_t offset = 0;
             { auto deser = [=](const std::vector<uint8_t> &buffer) -> PacketHeader {
@@ -7883,7 +7883,7 @@ public:
             return obj;
 
     }
-    std::string GameState_to_string(GameState obj) {
+    std::string GameState_to_string(const GameState obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [](const unsigned int &v) { return std::to_string(v); };
@@ -7898,10 +7898,10 @@ public:
             { auto conv = [=](const CharacterPhysicsState& obj) -> std::string {
             std::ostringstream oss;
             oss << "{";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "position=" << conv(obj.position); }
             oss << ", ";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "velocity=" << conv(obj.velocity); }
             oss << "}";
             return oss.str();
@@ -7944,10 +7944,10 @@ public:
             { auto conv = [=](const CharacterPhysicsState& obj) -> std::string {
             std::ostringstream oss;
             oss << "{";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "position=" << conv(obj.position); }
             oss << ", ";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "velocity=" << conv(obj.velocity); }
             oss << "}";
             return oss.str();
@@ -7984,7 +7984,7 @@ public:
             return oss.str();
 
     }
-    GameState string_to_GameState(std::string &s) {
+    GameState string_to_GameState(const std::string &s) {
         GameState obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -8187,7 +8187,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_GameState(GameState obj) {
+    std::vector<uint8_t> serialize_GameState(const GameState obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [](const unsigned int &v) {   std::vector<uint8_t> buf(sizeof(unsigned int));   std::memcpy(buf.data(), &v, sizeof(unsigned int));   return buf; };
               auto bytes = ser(obj.id);
@@ -8279,7 +8279,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_GameState(GameState obj) {
+    size_t size_when_serialized_GameState(const GameState obj) {
         size_t total = 0;
             { auto size_fn = [](const unsigned int &v) { return sizeof(unsigned int); };
               total += size_fn(obj.id); }
@@ -8342,7 +8342,7 @@ public:
             return total;
 
     }
-    GameState deserialize_GameState(std::vector<uint8_t> &buffer) {
+    GameState deserialize_GameState(const std::vector<uint8_t> &buffer) {
         GameState obj;
             size_t offset = 0;
             { auto deser = [](const std::vector<uint8_t> &buf) {   unsigned int v;   std::memcpy(&v, buf.data(), sizeof(unsigned int));   return v; };
@@ -8590,7 +8590,7 @@ public:
             return obj;
 
     }
-    std::string GameStatePacket_to_string(GameStatePacket obj) {
+    std::string GameStatePacket_to_string(const GameStatePacket obj) {
         std::ostringstream oss;
             oss << "{";
             { auto conv = [=](const PacketHeader& obj) -> std::string {
@@ -8628,10 +8628,10 @@ public:
             { auto conv = [=](const CharacterPhysicsState& obj) -> std::string {
             std::ostringstream oss;
             oss << "{";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "position=" << conv(obj.position); }
             oss << ", ";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "velocity=" << conv(obj.velocity); }
             oss << "}";
             return oss.str();
@@ -8674,10 +8674,10 @@ public:
             { auto conv = [=](const CharacterPhysicsState& obj) -> std::string {
             std::ostringstream oss;
             oss << "{";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "position=" << conv(obj.position); }
             oss << ", ";
-            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
+            { auto conv = [](const JPH::Vec3 &v) {   std::ostringstream oss;   oss << std::setprecision(std::numeric_limits<float>::max_digits10) << std::fixed;   oss << '(' << v.GetX() << ", " << v.GetY() << ", " << v.GetZ() << ')';   return oss.str(); };
               oss << "velocity=" << conv(obj.velocity); }
             oss << "}";
             return oss.str();
@@ -8718,7 +8718,7 @@ public:
             return oss.str();
 
     }
-    GameStatePacket string_to_GameStatePacket(std::string &s) {
+    GameStatePacket string_to_GameStatePacket(const std::string &s) {
         GameStatePacket obj;
             std::string trimmed = s.substr(1, s.size() - 2); // remove {}
             std::istringstream iss(trimmed);
@@ -8970,7 +8970,7 @@ public:
             return obj;
 
     }
-    std::vector<uint8_t> serialize_GameStatePacket(GameStatePacket obj) {
+    std::vector<uint8_t> serialize_GameStatePacket(const GameStatePacket obj) {
         std::vector<uint8_t> buffer;
             { auto ser = [=](const PacketHeader& obj) -> std::vector<uint8_t> {
             std::vector<uint8_t> buffer;
@@ -9088,7 +9088,7 @@ public:
             return buffer;
 
     }
-    size_t size_when_serialized_GameStatePacket(GameStatePacket obj) {
+    size_t size_when_serialized_GameStatePacket(const GameStatePacket obj) {
         size_t total = 0;
             { auto size_fn = [=](const PacketHeader& obj) -> size_t {
             size_t total = 0;
@@ -9168,7 +9168,7 @@ public:
             return total;
 
     }
-    GameStatePacket deserialize_GameStatePacket(std::vector<uint8_t> &buffer) {
+    GameStatePacket deserialize_GameStatePacket(const std::vector<uint8_t> &buffer) {
         GameStatePacket obj;
             size_t offset = 0;
             { auto deser = [=](const std::vector<uint8_t> &buffer) -> PacketHeader {

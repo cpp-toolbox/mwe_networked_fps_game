@@ -10,6 +10,7 @@
 #include "utility/meta_utils/meta_utils.hpp"
 #include "utility/movement/movement.hpp"
 
+#include "networking/networked_periodic_signal_quantizer/networked_periodic_signal_quantizer.hpp"
 #include "networking/packet_handler/packet_handler.hpp"
 #include "networking/server_networking/network.hpp"
 #include "networking/packets/packets.hpp"
@@ -72,6 +73,8 @@ struct Game {
     std::vector<ClientUpdateData> new_client_update_data;
     bool client_has_connected = false;
 
+    NetworkedPeriodicSignalQuantizer<CharacterUpdateDataTimeBundle> bundle_quantizer;
+
     Game() {
         auto world = create_world();
         auto raw_world = collection_utils::map_vector(
@@ -83,8 +86,44 @@ struct Game {
             auto client_update_data_packet = meta_program->deserialize_ClientUpdateDataPacket(buffer);
             global_logger->info("just received {}",
                                 meta_program->ClientUpdateDataPacket_to_string(client_update_data_packet));
-            new_client_update_data.push_back(client_update_data_packet.client_update_data);
+
+            if (client_update_data_processing_method ==
+                ClientUpdateDataProcessingMethod::UPDATE_STATE_AT_FIXED_FREQUENCY_USING_NPSQ) {
+                // NOTE: we know at(0) is valid because of how we're sending over now.
+                bundle_quantizer.push(
+                    client_update_data_packet.client_update_data.character_update_data_time_bundles.at(0));
+            } else {
+                new_client_update_data.push_back(client_update_data_packet.client_update_data);
+            }
         });
+
+        bundle_quantizer.output_emitter.connect<std::optional<CharacterUpdateDataTimeBundle>>(
+            [&](const std::optional<CharacterUpdateDataTimeBundle> &cud_bundle) {
+                GlobalLogSection _("bundle quantizer new state received");
+
+                std::optional<CharacterUpdateDataTimeBundle> best_bundle_to_use = std::nullopt;
+
+                if (cud_bundle) {
+                    best_bundle_to_use = cud_bundle;
+                } else {
+                    if (last_processed_cud_bundle) {
+                        best_bundle_to_use = last_processed_cud_bundle;
+                    }
+                }
+
+                if (best_bundle_to_use == std::nullopt) {
+                    global_logger->warn("there was no best bundle to use, this should only happen at the start when at "
+                                        "least one bundle has not yet been processed.");
+                    // NOTE: we need to think if just early returning is fine here, imo it is because we're just waiting
+                    // for npsq to return us a real cud bundle.
+                    return;
+                }
+
+                process_cud_bundle(*best_bundle_to_use);
+                last_processed_cud_bundle = best_bundle_to_use;
+
+                send_out_game_state_packet();
+            });
 
         client_id_to_non_local_client_character_base.emplace(1, physics_target);
 
@@ -112,6 +151,7 @@ struct Game {
         // this is proper but will introduce reconciliation deltas when there are ticks with non cud's that were
         // processed.
         UPDATE_STATE_AT_FIXED_FREQUENCY,
+        UPDATE_STATE_AT_FIXED_FREQUENCY_USING_NPSQ,
     };
 
     ClientUpdateDataProcessingMethod client_update_data_processing_method =
@@ -220,8 +260,14 @@ struct Game {
         auto packets = network.get_network_events_since_last_tick();
         packet_handler.handle_packets(packets);
 
+        bundle_quantizer.update();
+
         if (process_client_updates_signal.process_and_get_signal()) {
             GlobalLogSection _("process_client_updates_signal activated");
+
+            if (client_update_data_processing_method ==
+                ClientUpdateDataProcessingMethod::UPDATE_STATE_AT_FIXED_FREQUENCY_USING_NPSQ)
+                return;
 
             switch (client_update_data_processing_method) {
             case ClientUpdateDataProcessingMethod::ONLY_UPDATE_STATE_WHILE_PROCESSING_CLIENT_UPDATED_DATA:
@@ -255,18 +301,24 @@ struct Game {
             new_client_update_data.clear();
 
             // we may as well send out right after...
-
-            bool processed_at_least_one_cud = last_applied_cud_id.has_value();
-            if (client_has_connected and processed_at_least_one_cud) {
-                GameStatePacket gsp = construct_game_state_packet();
-                auto buffer = meta_program->serialize_GameStatePacket(gsp);
-                network.unreliable_broadcast(buffer.data(), buffer.size());
-                global_logger->info("just sent {}", meta_program->GameStatePacket_to_string(gsp));
-                game_state_id++;
-            }
+            send_out_game_state_packet();
         }
     }
 
+    void send_out_game_state_packet() {
+        bool processed_at_least_one_cud = last_applied_cud_id.has_value();
+        if (client_has_connected and processed_at_least_one_cud) {
+            GameStatePacket gsp = construct_game_state_packet();
+            auto buffer = meta_program->serialize_GameStatePacket(gsp);
+            network.unreliable_broadcast(buffer.data(), buffer.size());
+            global_logger->info("just sent {}", meta_program->GameStatePacket_to_string(gsp));
+            game_state_id++;
+        }
+    }
+
+    /**
+     * @pre last_applied_cud_id is not nullopt
+     */
     GameStatePacket construct_game_state_packet() {
 
         auto new_physics_target_pos =
@@ -316,54 +368,55 @@ struct Game {
             // NOTE: when no packets are received, the character is not simulated, needs to be fixed up
             // in the future.
 
-            bool legacy_logging = true;
-            {
+            bool legacy_logging = false;
+            { // physics
                 LogSection _(*global_logger, "apply_update");
                 if (legacy_logging) {
                     IdTaggedCharacterPhysicsUpdateData id_tagged_character_physics_update_data{
                         id_tagged_character_update_data.id,
                         id_tagged_character_update_data.character_update_data.character_physics_update_data};
-                    global_logger->info("Applying input: {}",
+                    global_logger->info("applying update: {}",
                                         meta_program->IdTaggedCharacterPhysicsUpdateData_to_string(
                                             id_tagged_character_physics_update_data));
                 } else {
                     global_logger->info(
-                        "Applying input: {}",
+                        "applying update: [id={}] {}", id_tagged_character_update_data.id,
                         meta_program->CharacterPhysicsUpdateData_to_string(
                             id_tagged_character_update_data.character_update_data.character_physics_update_data));
                 }
 
-                global_logger->info("State before updating: {}",
+                // this logging language should be shared for easier log anaylsis.
+                global_logger->info("state before applying: {}",
                                     meta_program->CharacterPhysicsState_to_string(get_state(physics_character)));
                 update_physics_character(
                     id_tagged_character_update_data.character_update_data.character_physics_update_data,
                     physics_character, physics);
-                global_logger->info("State after updating: {}",
+                global_logger->info("state after applying: {}",
                                     meta_program->CharacterPhysicsState_to_string(get_state(physics_character)));
             }
-            {
+            { // camera
                 LogSection _(*global_logger, "apply_update");
 
                 if (legacy_logging) {
                     IdTaggedCharacterCameraUpdateData id_tagged_character_camera_update_data{
                         id_tagged_character_update_data.id,
                         id_tagged_character_update_data.character_update_data.character_camera_update_data};
-                    global_logger->info("Applying input: {}", meta_program->IdTaggedCharacterCameraUpdateData_to_string(
+                    global_logger->info("applying input: {}", meta_program->IdTaggedCharacterCameraUpdateData_to_string(
                                                                   id_tagged_character_camera_update_data));
                 } else {
                     global_logger->info(
-                        "Applying input: {}",
+                        "applying input: {}",
                         meta_program->CharacterCameraUpdateData_to_string(
                             id_tagged_character_update_data.character_update_data.character_camera_update_data));
                 }
 
-                global_logger->info("State before updating: {}",
+                global_logger->info("state before updating: {}",
                                     meta_program->CharacterCameraState_to_string(get_camera_state(fps_camera)));
                 fps_camera.mouse_callback(
                     id_tagged_character_update_data.character_update_data.character_camera_update_data.mouse_position_x,
                     id_tagged_character_update_data.character_update_data.character_camera_update_data.mouse_position_y,
                     id_tagged_character_update_data.character_update_data.character_camera_update_data.sensitivity);
-                global_logger->info("State after updating: {}",
+                global_logger->info("state after updating: {}",
                                     meta_program->CharacterCameraState_to_string(get_camera_state(fps_camera)));
 
                 //     last_applied_ccud_id = id_tagged_character_camera_update_data.id;
@@ -474,6 +527,7 @@ int main() {
     }
 
     Game game;
-    game.client_update_data_processing_method = Game::ClientUpdateDataProcessingMethod::UPDATE_STATE_AT_FIXED_FREQUENCY;
+    game.client_update_data_processing_method =
+        Game::ClientUpdateDataProcessingMethod::UPDATE_STATE_AT_FIXED_FREQUENCY_USING_NPSQ;
     game.start();
 }

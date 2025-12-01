@@ -3,7 +3,7 @@ import re
 # Regexes for parsing
 id_regex = re.compile(r"id=(\d+)")
 state_after_regex = re.compile(
-    r"State after updating: \{yaw=([-0-9.e+]+), pitch=([-0-9.e+]+), "
+    r"state after applying: \{yaw=([-0-9.e+]+), pitch=([-0-9.e+]+), "
     r"last_mouse_position_x=([-0-9.e+]+), last_mouse_position_y=([-0-9.e+]+)\}"
 )
 

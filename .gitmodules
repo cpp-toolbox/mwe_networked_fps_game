@@ -283,3 +283,12 @@
 [submodule "client/src/utility/lazy_construction"]
 	path = client/src/utility/lazy_construction
 	url = git@github.com:cpp-toolbox/lazy_construction.git
+[submodule "server/src/networking/networked_periodic_signal_quantizer"]
+	path = server/src/networking/networked_periodic_signal_quantizer
+	url = git@github.com:cpp-toolbox/networked_periodic_signal_quantizer.git
+[submodule "server/src/utility/circular_vector"]
+	path = server/src/utility/circular_vector
+	url = git@github.com:cpp-toolbox/circular_vector.git
+[submodule "server/src/utility/math_utils"]
+	path = server/src/utility/math_utils
+	url = git@github.com:cpp-toolbox/math_utils.git

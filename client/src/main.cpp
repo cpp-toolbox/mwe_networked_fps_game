@@ -2,6 +2,8 @@
  * next step is to debug some of the shuddering caused by the networked interpolator as compared to raw non-entity
  * interpolation
  *
+ * next step is to account for the deltas in reconciliation now.
+ *
  * next up is to test it out on windows now with the new setup.
  *
  * TODO: we need to debug why network tick takes so long so we need so logging/timing utilties for this.
@@ -312,7 +314,7 @@ int main() {
             physics_target->SetLinearVelocity(gs.target_physics_state.velocity);
             target_visual.transform.set_translation(j2g(gs.target_physics_state.position));
             global_logger->debug("just set physics_target position to: {}",
-                                 vec3_to_string(j2g(gs.target_physics_state.position)));
+                                 meta_program->glm_vec3_to_string(j2g(gs.target_physics_state.position)));
         }
     });
 
@@ -359,8 +361,9 @@ int main() {
                 if (interpolated_game_state) {
 
                     physics_target->SetPosition(interpolated_game_state->target_physics_state.position);
-                    global_logger->debug("just set physics_target position to: {}",
-                                         vec3_to_string(j2g(interpolated_game_state->target_physics_state.position)));
+                    global_logger->debug(
+                        "just set physics_target position to: {}",
+                        meta_program->glm_vec3_to_string(j2g(interpolated_game_state->target_physics_state.position)));
                     target_visual.transform.set_translation(
                         j2g(interpolated_game_state->target_physics_state.position));
                 }
@@ -551,10 +554,16 @@ int main() {
         {
             GlobalLogSection _("tick client to server send");
             // startfold client to server send
-            if (client_to_server_send_signal.process_and_get_signal()) {
+
+            auto bundles = character_physics_update_data_time_bundler.take_bundles_since_last_send();
+            if (bundles.size() == 1) {
+                // if (client_to_server_send_signal.process_and_get_signal()) {
                 ClientUpdateData client_update_data;
-                client_update_data.character_update_data_time_bundles =
-                    character_physics_update_data_time_bundler.take_bundles_since_last_send();
+                client_update_data.character_update_data_time_bundles = bundles;
+                if (client_update_data.character_update_data_time_bundles.empty()) {
+                    global_logger->warn("sending out empty time bundle, this is bad!");
+                }
+
                 client_update_data.id = client_update_data_packet_id;
 
                 ClientUpdateDataPacket client_update_data_packet;
